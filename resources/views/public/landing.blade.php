@@ -109,18 +109,18 @@
 
 {{-- DYNAMIC SECTIONS --}}
 @foreach($sections as $section)
-<section class="py-16 @if($loop->even) bg-gray-50 @endif">
+<section class="py-20 @if($loop->even) bg-gray-50 @endif">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl font-bold mb-6 text-blue-600">{{ $section->title }}</h2>
+            <h2 class="text-5xl font-bold mb-8 gradient-text" data-aos="fade-up">{{ $section->title }}</h2>
 
             @if($section->image)
-            <div class="mb-8">
-                <img src="{{ asset('storage/' . $section->image) }}" alt="{{ $section->title }}" class="w-full h-96 object-cover rounded-lg shadow">
+            <div class="mb-12 overflow-hidden rounded-xl shadow-lg" data-aos="zoom-in" data-aos-delay="200">
+                <img src="{{ asset('storage/' . $section->image) }}" alt="{{ $section->title }}" class="w-full h-96 object-cover hover:scale-105 transition-transform duration-500">
             </div>
             @endif
 
-            <div class="prose prose-lg max-w-none text-gray-700">
+            <div class="prose prose-lg max-w-none text-gray-700" data-aos="fade-up" data-aos-delay="300">
                 {!! $section->content !!}
             </div>
         </div>
@@ -129,39 +129,39 @@
 @endforeach
 
 {{-- LATEST NEWS SECTION --}}
-<section class="py-16 bg-gray-900 text-white">
+<section class="py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold mb-2">Berita & Pengumuman</h2>
-            <p class="text-gray-300">Informasi terbaru dari yayasan kami</p>
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-5xl font-bold mb-4">Berita & Pengumuman</h2>
+            <p class="text-xl text-gray-300">Informasi terbaru dan update dari yayasan kami</p>
+            <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-6"></div>
         </div>
 
         @if($latestNews->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             @foreach($latestNews as $news)
-            <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition">
+            <article class="card-hover bg-slate-800 rounded-xl overflow-hidden shadow-lg group" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 @if($news->image)
-                <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('storage/' . $news->image) }}" alt="{{ $news->title }}" class="w-full h-full object-cover hover:scale-105 transition">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="{{ asset('storage/' . $news->image) }}" alt="{{ $news->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        {{ $news->published_at->translatedFormat('j M Y') }}
+                    </div>
                 </div>
                 @endif
 
                 <div class="p-6">
-                    <div class="text-sm text-blue-400 mb-2">
-                        {{ $news->published_at->translatedFormat('j F Y') }}
-                    </div>
-
-                    <h3 class="text-xl font-bold mb-3 line-clamp-2">
+                    <h3 class="text-xl font-bold mb-3 line-clamp-2 text-white group-hover:text-blue-400 transition-colors">
                         {{ $news->title }}
                     </h3>
 
-                    <p class="text-gray-300 text-sm line-clamp-3 mb-4">
-                        {{ $news->excerpt }}
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-5">
+                        {{ $news->excerpt ?? substr(strip_tags($news->content), 0, 150) }}
                     </p>
 
-                    <a href="{{ route('news.show', $news->slug) }}" class="text-blue-400 hover:text-blue-300 font-semibold inline-flex items-center">
+                    <a href="{{ route('news.show', $news->slug) }}" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold transition-colors group">
                         Baca Selengkapnya
-                        <span class="ml-2">→</span>
+                        <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
             </article>
@@ -169,7 +169,7 @@
         </div>
 
         <div class="text-center">
-            <a href="{{ route('news.index') }}" class="inline-block bg-blue-600 text-white px-8 py-3 rounded font-semibold hover:bg-blue-700 transition">
+            <a href="{{ route('news.index') }}" class="btn-primary">
                 Lihat Semua Berita
             </a>
         </div>
@@ -182,12 +182,17 @@
 </section>
 
 {{-- CALL TO ACTION --}}
-<section class="py-16 bg-blue-600 text-white">
-    <div class="container mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold mb-4">Punya Pertanyaan?</h2>
-        <p class="text-lg mb-8 text-blue-100">Hubungi kami melalui halaman kontak atau media sosial</p>
-        <a href="{{ route('kontak') }}" class="bg-white text-blue-600 px-8 py-3 rounded font-semibold hover:bg-gray-100 transition inline-block">
-            Hubungi Kami
+<section class="py-20 bg-gradient-to-r from-blue-600 to-blue-700 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 text-center relative z-10" data-aos="zoom-in">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Ada Pertanyaan untuk Kami?</h2>
+        <p class="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">Kami siap membantu Anda. Hubungi kami kapan saja melalui berbagai saluran komunikasi yang tersedia</p>
+        <a href="{{ route('kontak') }}" class="btn-primary">
+            Hubungi Kami Sekarang
         </a>
     </div>
 </section>

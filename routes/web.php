@@ -28,12 +28,12 @@ Route::get('/profil', [PublicPageController::class, 'profil'])->name('profil');
 Route::get('/visi-misi', [PublicPageController::class, 'visiMisi'])->name('visi-misi');
 Route::get('/kontak', [PublicPageController::class, 'kontak'])->name('kontak');
 
-// DYNAMIC PAGE - untuk halaman custom lainnya
-Route::get('/{slug}', [PublicPageController::class, 'show'])->name('page.show');
-
 // NEWS
 Route::get('/berita', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/berita/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
+
+// DYNAMIC PAGE - untuk halaman custom lainnya (HARUS PALING AKHIR)
+Route::get('/{slug}', [PublicPageController::class, 'show'])->name('page.show');
 /*
 |--------------------------------------------------------------------------
 | AUTH DASHBOARD (DEFAULT BREEZE)
