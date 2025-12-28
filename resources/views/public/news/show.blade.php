@@ -9,9 +9,9 @@
 <div class="bg-gray-100 py-4">
     <div class="container mx-auto px-4">
         <div class="text-sm text-gray-600">
-            <a href="{{ route('landing') }}" class="hover:text-blue-600">Beranda</a>
+            <a href="{{ route('landing') }}" class="hover:text-emerald-600">Beranda</a>
             <span class="mx-2">/</span>
-            <a href="{{ route('news.index') }}" class="hover:text-blue-600">Berita</a>
+            <a href="{{ route('news.index') }}" class="hover:text-emerald-600">Berita</a>
             <span class="mx-2">/</span>
             <span class="text-gray-800 font-semibold">{{ $news->title }}</span>
         </div>
@@ -58,7 +58,7 @@
         {{-- BACK BUTTON --}}
         <div class="text-center pt-8 border-t-2 border-gray-200">
             <a href="{{ route('news.index') }}" 
-               class="inline-block bg-blue-600 text-white px-6 py-3 rounded font-semibold hover:bg-blue-700 transition">
+               class="inline-block bg-emerald-600 text-white px-6 py-3 rounded font-semibold hover:bg-emerald-700 transition">
                 ← Kembali ke Berita
             </a>
         </div>

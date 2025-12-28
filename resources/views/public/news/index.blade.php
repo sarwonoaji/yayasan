@@ -6,76 +6,120 @@
 @section('content')
 
 {{-- BREADCRUMB --}}
-<div class="bg-gray-100 py-4">
+<div class="bg-gradient-to-r from-emerald-50 to-emerald-100 border-b border-emerald-200 py-6">
     <div class="container mx-auto px-4">
-        <div class="text-sm text-gray-600">
-            <a href="{{ route('landing') }}" class="hover:text-blue-600">Beranda</a>
-            <span class="mx-2">/</span>
-            <span class="text-gray-800 font-semibold">Berita</span>
+        <div class="flex items-center text-sm text-gray-600 space-x-2">
+            <a href="{{ route('landing') }}" class="hover:text-emerald-600 transition-colors flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2.83-2.83a1 1 0 011.41 0L12 12m0 0l3.76-3.76a1 1 0 011.41 0L21 12M5 6h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"></path></svg>
+                Beranda
+            </a>
+            <span class="text-gray-400">/</span>
+            <span class="text-gray-900 font-semibold">Berita & Pengumuman</span>
         </div>
     </div>
 </div>
 
 {{-- HEADER --}}
-<div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
-    <div class="container mx-auto px-4 text-center">
-        <h1 class="text-4xl font-bold mb-2">Berita & Pengumuman</h1>
-        <p class="text-blue-100">Informasi terbaru dari yayasan kami</p>
+<div class="bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white py-16 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full"></div>
+    </div>
+    <div class="container mx-auto px-4 text-center relative z-10" data-aos="fade-up">
+        <h1 class="text-5xl font-bold mb-4">Berita & Pengumuman</h1>
+        <p class="text-xl text-emerald-100">Informasi terbaru dan update dari yayasan kami</p>
+        <div class="w-20 h-1 bg-gradient-to-r from-emerald-300 to-emerald-400 mx-auto mt-6"></div>
     </div>
 </div>
 
 {{-- NEWS LIST --}}
-<div class="container mx-auto py-12 px-4">
+<div class="container mx-auto py-16 px-4">
     @if($news->count() > 0)
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         @foreach($news as $item)
-        <article class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition">
-            @if($item->image)
-            <div class="h-48 overflow-hidden">
-                <img src="{{ asset('storage/'.$item->image) }}" 
-                     alt="{{ $item->title }}" 
-                     class="w-full h-full object-cover hover:scale-105 transition">
+        <article class="card-hover bg-white rounded-xl overflow-hidden shadow-lg group" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+            <div class="relative h-48 overflow-hidden bg-gray-200">
+                @if($item->image)
+                    <img src="{{ asset('storage/'.$item->image) }}" 
+                         alt="{{ $item->title }}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                @else
+                    <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-gray-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                @endif
+                <div class="absolute top-4 right-4 bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {{ $item->published_at->translatedFormat('j M Y') }}
+                </div>
             </div>
-            @else
-            <div class="h-48 bg-gradient-to-r from-gray-300 to-gray-400 flex items-center justify-center">
-                <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-            </div>
-            @endif
 
             <div class="p-6">
-                <div class="text-sm text-blue-600 font-semibold mb-2">
-                    {{ $item->published_at->translatedFormat('j F Y') }}
-                </div>
-
-                <h2 class="text-xl font-bold mb-3 line-clamp-2 hover:text-blue-600">
+                <h2 class="text-xl font-bold mb-3 line-clamp-2 group-hover:text-emerald-600 transition-colors">
                     <a href="{{ route('news.show', $item->slug) }}">
                         {{ $item->title }}
                     </a>
                 </h2>
 
-                <p class="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {{ $item->excerpt }}
+                <p class="text-gray-600 text-sm line-clamp-3 mb-5">
+                    {{ $item->excerpt ?? substr(strip_tags($item->content), 0, 150) }}
                 </p>
 
                 <a href="{{ route('news.show', $item->slug) }}" 
-                   class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center transition">
+                   class="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold transition-colors group">
                     Baca Selengkapnya
-                    <span class="ml-2">→</span>
+                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
             </div>
         </article>
         @endforeach
     </div>
 
-    {{-- PAGINATION --}}
-    <div class="flex justify-center">
-        {{ $news->links() }}
+    {{-- FANCY PAGINATION --}}
+    @if($news->hasPages())
+    <div class="pagination" data-aos="fade-up">
+        {{-- Previous Page Link --}}
+        @if ($news->onFirstPage())
+            <span class="disabled">
+                <span class="opacity-50">← Sebelumnya</span>
+            </span>
+        @else
+            <a href="{{ $news->previousPageUrl() }}" class="flex items-center gap-1">
+                <span>← Sebelumnya</span>
+            </a>
+        @endif
+
+        {{-- Page Numbers --}}
+        @foreach ($news->getUrlRange(1, $news->lastPage()) as $page => $url)
+            @if ($page == $news->currentPage())
+                <span class="active">
+                    <span>{{ $page }}</span>
+                </span>
+            @else
+                <a href="{{ $url }}">{{ $page }}</a>
+            @endif
+        @endforeach
+
+        {{-- Next Page Link --}}
+        @if ($news->hasMorePages())
+            <a href="{{ $news->nextPageUrl() }}" class="flex items-center gap-1">
+                <span>Selanjutnya →</span>
+            </a>
+        @else
+            <span class="disabled">
+                <span class="opacity-50">Selanjutnya →</span>
+            </span>
+        @endif
     </div>
+    @endif
+
     @else
-    <div class="text-center py-16">
-        <p class="text-gray-500 text-lg">Belum ada berita</p>
+    <div class="text-center py-16" data-aos="fade-up">
+        <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <p class="text-gray-500 text-lg font-medium">Belum ada berita</p>
+        <p class="text-gray-400 mt-2">Nantikan berita terbaru dari kami</p>
     </div>
     @endif
 </div>

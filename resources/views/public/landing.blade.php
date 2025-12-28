@@ -29,7 +29,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.6), rgba(29, 78, 216, 0.6));
+        background: linear-gradient(135deg, rgba(5, 150, 105, 0.6), rgba(4, 120, 87, 0.6));
         z-index: 2;
     }
     
@@ -74,7 +74,7 @@
                         <img src="{{ asset('storage/' . $section->image) }}" alt="{{ $section->title }}">
                         <div class="hero-content">
                             <h1 class="text-5xl font-bold mb-4">{{ $section->title }}</h1>
-                            <p class="text-xl mb-8 text-blue-100 line-clamp-3">{{ strip_tags($section->content) }}</p>
+                            <p class="text-xl mb-8 text-emerald-100 line-clamp-3">{{ strip_tags($section->content) }}</p>
                         </div>
                     </div>
                     @endif
@@ -82,10 +82,10 @@
             @endif
             
             {{-- Fallback slide jika tidak ada gambar section --}}
-            <div class="swiper-slide bg-gradient-to-r from-blue-600 to-blue-800">
+            <div class="swiper-slide bg-gradient-to-r from-emerald-600 to-emerald-800">
                 <div class="hero-content">
                     <h1 class="text-5xl font-bold mb-4">Selamat Datang</h1>
-                    <p class="text-xl mb-8 text-blue-100">{{ $settings->site_name ?? 'Bersama membangun masa depan yang lebih baik' }}</p>
+                    <p class="text-xl mb-8 text-emerald-100">{{ $settings->site_name ?? 'Bersama membangun masa depan yang lebih baik' }}</p>
                 </div>
             </div>
         </div>
@@ -98,10 +98,10 @@
 
     {{-- CTA Buttons --}}
     <div class="absolute bottom-8 left-0 right-0 flex gap-4 justify-center z-10">
-        <a href="{{ route('profil') }}" class="bg-white text-blue-600 px-8 py-3 rounded font-semibold hover:bg-gray-100 transition">
+        <a href="{{ route('profil') }}" class="bg-white text-emerald-600 px-8 py-3 rounded font-semibold hover:bg-gray-100 transition">
             Tentang Kami
         </a>
-        <a href="{{ route('news.index') }}" class="border-2 border-white text-white px-8 py-3 rounded font-semibold hover:bg-blue-700 transition">
+        <a href="{{ route('news.index') }}" class="border-2 border-white text-white px-8 py-3 rounded font-semibold hover:bg-emerald-700 transition">
             Berita
         </a>
     </div>
@@ -134,7 +134,7 @@
         <div class="text-center mb-16" data-aos="fade-up">
             <h2 class="text-5xl font-bold mb-4">Berita & Pengumuman</h2>
             <p class="text-xl text-gray-300">Informasi terbaru dan update dari yayasan kami</p>
-            <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-6"></div>
+            <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto mt-6"></div>
         </div>
 
         @if($latestNews->count() > 0)
@@ -144,14 +144,14 @@
                 @if($news->image)
                 <div class="h-48 overflow-hidden relative">
                     <img src="{{ asset('storage/' . $news->image) }}" alt="{{ $news->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    <div class="absolute top-3 right-3 bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
                         {{ $news->published_at->translatedFormat('j M Y') }}
                     </div>
                 </div>
                 @endif
 
                 <div class="p-6">
-                    <h3 class="text-xl font-bold mb-3 line-clamp-2 text-white group-hover:text-blue-400 transition-colors">
+                    <h3 class="text-xl font-bold mb-3 line-clamp-2 text-white group-hover:text-emerald-400 transition-colors">
                         {{ $news->title }}
                     </h3>
 
@@ -159,7 +159,7 @@
                         {{ $news->excerpt ?? substr(strip_tags($news->content), 0, 150) }}
                     </p>
 
-                    <a href="{{ route('news.show', $news->slug) }}" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold transition-colors group">
+                    <a href="{{ route('news.show', $news->slug) }}" class="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-semibold transition-colors group">
                         Baca Selengkapnya
                         <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
@@ -182,7 +182,7 @@
 </section>
 
 {{-- CALL TO ACTION --}}
-<section class="py-20 bg-gradient-to-r from-blue-600 to-blue-700 text-white relative overflow-hidden">
+<section class="py-20 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white relative overflow-hidden">
     <div class="absolute inset-0 opacity-10">
         <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full"></div>
         <div class="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full"></div>
@@ -190,7 +190,7 @@
     
     <div class="container mx-auto px-4 text-center relative z-10" data-aos="zoom-in">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">Ada Pertanyaan untuk Kami?</h2>
-        <p class="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">Kami siap membantu Anda. Hubungi kami kapan saja melalui berbagai saluran komunikasi yang tersedia</p>
+        <p class="text-xl text-emerald-100 mb-10 max-w-2xl mx-auto">Kami siap membantu Anda. Hubungi kami kapan saja melalui berbagai saluran komunikasi yang tersedia</p>
         <a href="{{ route('kontak') }}" class="btn-primary">
             Hubungi Kami Sekarang
         </a>

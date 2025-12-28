@@ -44,11 +44,11 @@
 
         /* Button hover effects */
         .btn-primary {
-            @apply inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5;
+            @apply inline-block px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold transition-all duration-300 hover:bg-emerald-700 hover:shadow-lg hover:-translate-y-0.5;
         }
 
         .btn-secondary {
-            @apply inline-block px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold transition-all duration-300 hover:bg-blue-50 hover:shadow-lg;
+            @apply inline-block px-6 py-3 border-2 border-emerald-600 text-emerald-600 rounded-lg font-semibold transition-all duration-300 hover:bg-emerald-50 hover:shadow-lg;
         }
 
         /* Card hover effect */
@@ -58,7 +58,126 @@
 
         /* Gradient text */
         .gradient-text {
-            @apply bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent;
+            @apply bg-gradient-to-r from-emerald-600 to-emerald-700 bg-clip-text text-transparent;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            @apply fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-all duration-300;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            @apply bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 transform transition-all duration-300;
+            scale: 0.95;
+        }
+
+        .modal-overlay.active .modal {
+            scale: 1;
+        }
+
+        .modal-header {
+            @apply px-8 py-6 border-b border-gray-200 flex items-center justify-between;
+        }
+
+        .modal-body {
+            @apply px-8 py-6;
+        }
+
+        .modal-footer {
+            @apply px-8 py-4 border-t border-gray-200 flex gap-3 justify-end;
+        }
+
+        .modal-close {
+            @apply text-gray-400 hover:text-gray-600 cursor-pointer transition-colors;
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            @apply inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-dots {
+            @apply inline-flex gap-1;
+        }
+
+        .loading-dots span {
+            @apply w-2 h-2 bg-current rounded-full;
+            animation: bounce 1.4s infinite;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            @apply bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg;
+            animation: skeleton-loading 1s infinite alternate;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-color: hsl(200, 20%, 80%); }
+            100% { background-color: hsl(200, 20%, 95%); }
+        }
+
+        /* Pagination Styles */
+        .pagination {
+            @apply flex items-center justify-center gap-1 mt-12;
+        }
+
+        .pagination a,
+        .pagination span {
+            @apply px-3 py-2 rounded-lg transition-all duration-300;
+        }
+
+        .pagination a {
+            @apply text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 border border-gray-200 hover:border-emerald-300;
+        }
+
+        .pagination .active span {
+            @apply bg-emerald-600 text-white border-emerald-600 font-semibold;
+        }
+
+        .pagination .disabled span {
+            @apply text-gray-400 cursor-not-allowed;
+        }
+
+        /* Page Transition */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        main {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
     @stack('styles')
@@ -79,7 +198,7 @@
 
             <nav class="space-x-1 hidden md:flex">
                 @forelse($menus as $menu)
-                    <a href="{{ $menu->url }}" class="px-3 py-2 rounded-lg text-gray-700 font-medium transition-all duration-300 hover:bg-blue-50 hover:text-blue-600">
+                    <a href="{{ $menu->url }}" class="px-3 py-2 rounded-lg text-gray-700 font-medium transition-all duration-300 hover:bg-emerald-50 hover:text-emerald-600">
                         {{ $menu->title }}
                     </a>
                 @empty
@@ -99,7 +218,7 @@
         <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100">
             <div class="container mx-auto px-4 py-3 space-y-1">
                 @forelse($menus as $menu)
-                    <a href="{{ $menu->url }}" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">
+                    <a href="{{ $menu->url }}" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-300">
                         {{ $menu->title }}
                     </a>
                 @empty
@@ -132,7 +251,7 @@
                     @if($settings && ($settings->facebook || $settings->instagram || $settings->youtube))
                     <div class="flex gap-3 mt-4">
                         @if($settings->facebook)
-                        <a href="{{ $settings->facebook }}" target="_blank" class="w-10 h-10 rounded-full bg-slate-700 hover:bg-blue-600 flex items-center justify-center transition-all duration-300">
+                        <a href="{{ $settings->facebook }}" target="_blank" class="w-10 h-10 rounded-full bg-slate-700 hover:bg-emerald-600 flex items-center justify-center transition-all duration-300">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         </a>
                         @endif
@@ -154,7 +273,7 @@
                     <h3 class="font-bold text-white mb-4 text-lg">Menu Navigasi</h3>
                     <ul class="space-y-2 text-sm">
                         @forelse($menus as $menu)
-                            <li><a href="{{ $menu->url }}" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">{{ $menu->title }}</a></li>
+                            <li><a href="{{ $menu->url }}" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">{{ $menu->title }}</a></li>
                         @empty
                             <li class="text-gray-500">Belum ada menu</li>
                         @endforelse
@@ -166,20 +285,20 @@
                     @if($settings)
                         @if($settings->address)
                         <p class="text-sm text-gray-400 mb-3 flex items-start gap-2">
-                            <span class="text-blue-400 mt-1">📍</span>
+                            <span class="text-emerald-400 mt-1">📍</span>
                             <span>{{ $settings->address }}</span>
                         </p>
                         @endif
                         @if($settings->phone)
                         <p class="text-sm text-gray-400 mb-3 flex items-center gap-2">
-                            <span class="text-blue-400">📞</span>
-                            <a href="tel:{{ $settings->phone }}" class="hover:text-blue-400 transition-colors duration-300">{{ $settings->phone }}</a>
+                            <span class="text-emerald-400">📞</span>
+                            <a href="tel:{{ $settings->phone }}" class="hover:text-emerald-400 transition-colors duration-300">{{ $settings->phone }}</a>
                         </p>
                         @endif
                         @if($settings->email)
                         <p class="text-sm text-gray-400 flex items-center gap-2">
-                            <span class="text-blue-400">✉️</span>
-                            <a href="mailto:{{ $settings->email }}" class="hover:text-blue-400 transition-colors duration-300">{{ $settings->email }}</a>
+                            <span class="text-emerald-400">✉️</span>
+                            <a href="mailto:{{ $settings->email }}" class="hover:text-emerald-400 transition-colors duration-300">{{ $settings->email }}</a>
                         </p>
                         @endif
                     @endif
@@ -203,7 +322,97 @@
             once: false,
             offset: 100
         });
+
+        // Modal Handler
+        window.Modal = {
+            open(id) {
+                const modal = document.getElementById(id);
+                if (modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            },
+            close(id) {
+                const modal = document.getElementById(id);
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        };
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Close modal on close button
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const modal = e.target.closest('.modal-overlay');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Loading state for forms
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const btn = this.querySelector('button[type="submit"]');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span> Memproses...';
+                }
+            });
+        });
+
+        // Show loading spinner on page change (pagination/navigation)
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && !e.target.target) {
+                const href = e.target.href;
+                if (href && href.includes(window.location.origin)) {
+                    // Show page loading indicator if needed
+                }
+            }
+        });
     </script>
+
+    {{-- Reusable Modal Example --}}
+    @if(session('success') || session('error') || $errors->any())
+    <div id="alertModal" class="modal-overlay active">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="text-lg font-semibold">{{ session('success') ? 'Sukses' : (session('error') ? 'Error' : 'Validasi') }}</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                @if(session('success'))
+                    <p class="text-gray-700">{{ session('success') }}</p>
+                @elseif(session('error'))
+                    <p class="text-gray-700">{{ session('error') }}</p>
+                @else
+                    <ul class="list-disc list-inside text-red-600 space-y-1">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="Modal.close('alertModal')" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-all duration-300">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 
     @stack('scripts')
 </body>
