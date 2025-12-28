@@ -18,6 +18,7 @@
             <a href="{{ route('admin.menus.index') }}" class="block hover:bg-slate-700 p-2 rounded">Menu Navbar</a>
             <a href="{{ route('admin.pages.index') }}" class="block hover:bg-slate-700 p-2 rounded">Halaman Statis</a>
             <a href="{{ route('admin.news.index') }}" class="block hover:bg-slate-700 p-2 rounded">Berita</a>
+            <a href="{{ route('admin.settings.index') }}" class="block hover:bg-slate-700 p-2 rounded">⚙️ Pengaturan</a>
         </nav>
     </aside>
 

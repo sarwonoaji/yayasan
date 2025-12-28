@@ -192,8 +192,17 @@
 
     <header class="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="font-bold text-2xl gradient-text hover:opacity-80 transition">
-                {{ $settings->site_name ?? 'Yayasan' }}
+            <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-80 transition">
+                @if($settings && $settings->logo)
+                <img src="{{ asset('storage/' . $settings->logo) }}" alt="Logo" class="h-10 w-auto">
+                @else
+                <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                @endif
+                <span class="font-bold text-2xl gradient-text">{{ $settings->site_name ?? 'Yayasan' }}</span>
             </a>
 
             <nav class="space-x-1 hidden md:flex">
@@ -240,11 +249,25 @@
     </main>
 
     {{-- FOOTER --}}
-    <footer class="bg-gradient-to-br from-slate-900 to-slate-800 text-gray-300 mt-20 border-t border-slate-700">
+    <footer class="bg-gradient-to-br from-slate-900 to-slate-800 text-gray-300 mt-20 border-t-4 border-emerald-600 relative">
+        <!-- Decorative top line -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+        
         <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div data-aos="fade-up">
-                    <h3 class="font-bold text-white mb-3 text-lg gradient-text">{{ $settings->site_name ?? 'Yayasan' }}</h3>
+                    <div class="flex items-center gap-3 mb-3">
+                        @if($settings && $settings->logo)
+                        <img src="{{ asset('storage/' . $settings->logo) }}" alt="Logo" class="h-12 w-auto">
+                        @else
+                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        @endif
+                        <h3 class="font-bold text-white text-lg text-emerald-400">{{ $settings->site_name ?? 'Yayasan' }}</h3>
+                    </div>
                     <p class="text-sm text-gray-400 leading-relaxed">
                         Website resmi yayasan yang berdedikasi untuk memberikan pelayanan terbaik bagi masyarakat.
                     </p>
@@ -270,18 +293,32 @@
                 </div>
 
                 <div data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="font-bold text-white mb-4 text-lg">Menu Navigasi</h3>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-white text-lg">Menu Navigasi</h3>
+                    </div>
                     <ul class="space-y-2 text-sm">
                         @forelse($menus as $menu)
-                            <li><a href="{{ $menu->url }}" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">{{ $menu->title }}</a></li>
+                            <li><a href="{{ $menu->url }}" class="text-gray-400 hover:text-emerald-400 hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-1"><span>→</span>{{ $menu->title }}</a></li>
                         @empty
                             <li class="text-gray-500">Belum ada menu</li>
                         @endforelse
                     </ul>
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="font-bold text-white mb-4 text-lg">Kontak Kami</h3>
+                <div data-aos="fade-up" data-aos-delay="200" class="border-l-2 border-emerald-600 pl-6 md:border-l-2 md:pl-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-white text-lg">Kontak Kami</h3>
+                    </div>
                     @if($settings)
                         @if($settings->address)
                         <p class="text-sm text-gray-400 mb-3 flex items-start gap-2">
@@ -305,10 +342,15 @@
                 </div>
             </div>
 
-            <div class="border-t border-slate-700 pt-6">
-                <p class="text-center text-sm text-gray-500">
-                    © {{ date('Y') }} <span class="gradient-text font-semibold">{{ $settings->site_name ?? 'Yayasan' }}</span>. All rights reserved. | Designed with ❤️
-                </p>
+            <div class="border-t-2 border-emerald-600 pt-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                    <p class="text-sm text-gray-400">
+                        © {{ date('Y') }} <span class="text-emerald-400 font-semibold">{{ $settings->site_name ?? 'Yayasan' }}</span>. All rights reserved.
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        Designed with <span class="text-red-500 animate-pulse">❤️</span> by Team
+                    </p>
+                </div>
             </div>
         </div>
     </footer>

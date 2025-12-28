@@ -112,7 +112,7 @@
 <section class="py-20 @if($loop->even) bg-gray-50 @endif">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-5xl font-bold mb-8 gradient-text" data-aos="fade-up">{{ $section->title }}</h2>
+            <h2 class="text-5xl font-bold mb-8 text-emerald-600" data-aos="fade-up">{{ $section->title }}</h2>
 
             @if($section->image)
             <div class="mb-12 overflow-hidden rounded-xl shadow-lg" data-aos="zoom-in" data-aos-delay="200">

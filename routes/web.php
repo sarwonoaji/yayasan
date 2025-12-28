@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\LandingSectionController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +59,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('landing-sections', LandingSectionController::class);
     Route::resource('menus', MenuController::class);
     Route::resource('news', NewsController::class);
-     Route::resource('pages', PageController::class);
+    Route::resource('pages', PageController::class);
+    
+    // Settings
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('/settings/edit', [SettingsController::class, 'edit'])->name('settings.edit');
+    Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 /*

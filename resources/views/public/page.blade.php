@@ -23,7 +23,7 @@
 <div class="container mx-auto py-20 px-4">
     <article class="max-w-3xl mx-auto" data-aos="fade-up">
         <div class="mb-12">
-            <h1 class="text-5xl font-bold mb-4 gradient-text">{{ $page->title }}</h1>
+            <h1 class="text-5xl font-bold mb-4 text-emerald-600">{{ $page->title }}</h1>
             <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
         </div>
         
