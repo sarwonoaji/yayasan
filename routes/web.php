@@ -1,20 +1,82 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// PUBLIC
+use App\Http\Controllers\Public\LandingController;
+use App\Http\Controllers\Public\NewsController as PublicNewsController;
+use App\Http\Controllers\Public\PageController as PublicPageController;
+
+// ADMIN
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LandingSectionController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\PageController;
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES (LANDING PAGE)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+// PAGE
+Route::get('/profil', [PublicPageController::class, 'profil'])->name('profil');
+Route::get('/visi-misi', [PublicPageController::class, 'visiMisi'])->name('visi-misi');
+Route::get('/kontak', [PublicPageController::class, 'kontak'])->name('kontak');
+
+// DYNAMIC PAGE - untuk halaman custom lainnya
+Route::get('/{slug}', [PublicPageController::class, 'show'])->name('page.show');
+
+// NEWS
+Route::get('/berita', [PublicNewsController::class, 'index'])->name('news.index');
+Route::get('/berita/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
+/*
+|--------------------------------------------------------------------------
+| AUTH DASHBOARD (DEFAULT BREEZE)
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN CMS ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    Route::resource('landing-sections', LandingSectionController::class);
+    Route::resource('menus', MenuController::class);
+    Route::resource('news', NewsController::class);
+     Route::resource('pages', PageController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| USER PROFILE (BREEZE DEFAULT)
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
 
 require __DIR__.'/auth.php';
