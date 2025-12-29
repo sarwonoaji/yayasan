@@ -34,7 +34,7 @@ Route::get('/berita', [PublicNewsController::class, 'index'])->name('news.index'
 Route::get('/berita/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
 
 // DYNAMIC PAGE - untuk halaman custom lainnya (HARUS PALING AKHIR)
-Route::get('/{slug}', [PublicPageController::class, 'show'])->name('page.show');
+
 /*
 |--------------------------------------------------------------------------
 | AUTH DASHBOARD (DEFAULT BREEZE)
@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -86,3 +87,4 @@ Route::middleware('auth')->group(function () {
 */
 
 require __DIR__.'/auth.php';
+Route::get('/{slug}', [PublicPageController::class, 'show'])->name('page.show');

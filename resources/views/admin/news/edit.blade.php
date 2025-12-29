@@ -5,7 +5,7 @@
 @section('content')
 <h1 class="text-xl font-bold mb-4">Edit Berita</h1>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.news.update', $news->id) }}" enctype="multipart/form-data">
 @csrf @method('PUT')
 
 <label class="block mb-2">Judul</label>
