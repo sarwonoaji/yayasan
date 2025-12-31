@@ -5,11 +5,6 @@ if (! function_exists('renderContent')) {
         $content = html_entity_decode(trim($content));
         $zoom = 15;
 
-        /**
-         * =========================
-         * 1. oEmbed Google Maps SAJA
-         * =========================
-         */
         if (
             preg_match(
                 '/^<oembed[^>]*url="([^"]+google\.com\/maps[^"]+)"[^>]*><\/oembed>$/i',
@@ -37,11 +32,7 @@ if (! function_exists('renderContent')) {
             }
         }
 
-        /**
-         * =========================
-         * 2. URL Google Maps polos SAJA
-         * =========================
-         */
+
         if (
             filter_var($content, FILTER_VALIDATE_URL) &&
             str_contains($content, 'google.com/maps')
@@ -59,11 +50,7 @@ if (! function_exists('renderContent')) {
             </div>';
         }
 
-        /**
-         * =========================
-         * 3. Ada konten lain → biarkan
-         * =========================
-         */
+   
         return $content;
     }
 }
