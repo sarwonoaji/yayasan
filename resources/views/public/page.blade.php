@@ -4,6 +4,90 @@
 @section('meta_description', $page->meta_description ?? $page->title)
 
 @section('content')
+@php
+    function renderContent($content)
+    {
+        libxml_use_internal_errors(true);
+
+        $content = html_entity_decode(trim($content));
+
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $content);
+
+        $xpath = new DOMXPath($dom);
+        $zoom = 15;
+
+        // Cari <figure class="media">
+        $figures = $xpath->query('//figure[contains(@class,"media")]');
+
+        foreach ($figures as $figure) {
+            $oembed = $figure->getElementsByTagName('oembed')->item(0);
+            if (! $oembed) continue;
+
+            $url = $oembed->getAttribute('url');
+
+            // Pastikan Google Maps
+            if (! str_contains($url, 'google.com/maps')) continue;
+
+            $lat = null;
+            $lng = null;
+
+            // Ambil koordinat
+            if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $url, $m)) {
+                $lat = $m[1];
+                $lng = $m[2];
+            }
+
+            // Buat iframe
+            $iframe = $dom->createElement('iframe');
+            $iframe->setAttribute(
+                'src',
+                $lat && $lng
+                    ? "https://www.google.com/maps?q={$lat},{$lng}&z={$zoom}&output=embed"
+                    : "https://www.google.com/maps?q=" . urlencode($url) . "&output=embed"
+            );
+            $iframe->setAttribute('width', '100%');
+            $iframe->setAttribute('height', '450');
+            $iframe->setAttribute('style', 'border:0;');
+            $iframe->setAttribute('loading', 'lazy');
+            $iframe->setAttribute('allowfullscreen', '');
+
+            // Bungkus iframe agar tidak kena prose
+            $wrapper = $dom->createElement('div');
+            $wrapper->setAttribute('class', 'not-prose space-y-4');
+            $wrapper->appendChild($iframe);
+
+            // Tombol rute
+            if ($lat && $lng) {
+                $a = $dom->createElement('a', 'Rute ke Lokasi');
+                $a->setAttribute(
+                    'href',
+                    "https://www.google.com/maps/dir/?api=1&destination={$lat},{$lng}"
+                );
+                $a->setAttribute('target', '_blank');
+                $a->setAttribute(
+                    'class',
+                    'inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition'
+                );
+                $wrapper->appendChild($a);
+            }
+
+            // GANTI figure → iframe (konten lain aman)
+            $figure->parentNode->replaceChild($wrapper, $figure);
+        }
+
+        // Ambil HTML tanpa <html><body>
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $result = '';
+        foreach ($body->childNodes as $child) {
+            $result .= $dom->saveHTML($child);
+        }
+
+        return $result;
+    }
+@endphp
+
+
 
 {{-- BREADCRUMB --}}
 <div class="bg-gradient-to-r from-emerald-50 to-emerald-100 border-b border-emerald-200 py-6">
@@ -29,8 +113,14 @@
         
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12" data-aos="fade-up" data-aos-delay="100">
             <div class="prose prose-lg max-w-none">
-                {!! $page->content !!}
-            </div>
+            {{-- {!! $page->content !!} --}}
+             {!! renderContent($page->content) !!}
+             {{-- {!! preg_replace(
+        '/(<iframe.*?<\/iframe>)/is',
+        '<div class="not-prose">$1</div>',
+        html_entity_decode($page->content)
+    ) !!}  --}}
+    </div>
         </div>
 
         {{-- Back Button --}}

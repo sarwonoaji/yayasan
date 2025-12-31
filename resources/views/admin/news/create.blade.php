@@ -3,38 +3,56 @@
 @section('title','Tambah Berita')
 
 @section('content')
-<h1 class="text-xl font-bold mb-4">Tambah Berita</h1>
+<div class="flex items-center justify-between mb-4">
+	<h1 class="text-xl font-bold flex items-center gap-2">
+		<span class="material-symbols-outlined text-emerald-600">post_add</span>
+		Tambah Berita
+	</h1>
+	<a href="{{ route('admin.news.index') }}" class="text-sm text-emerald-600 hover:underline">Kembali</a>
+</div>
 
-<form method="POST" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.news.store') }}" enctype="multipart/form-data" class="bg-white p-6 rounded shadow">
 @csrf
 
-<label class="block mb-2">Judul</label>
-<input name="title" class="w-full border p-2 mb-4" required>
+	<label class="block mb-2">Judul</label>
+	<input name="title" value="{{ old('title') }}" class="w-full border rounded px-3 py-2 mb-3">
 
-<label class="block mb-2">Excerpt</label>
-<textarea name="excerpt" class="w-full border p-2 mb-4"></textarea>
+	<label class="block mb-2">Excerpt</label>
+	<textarea name="excerpt" class="w-full border rounded px-3 py-2 mb-3">{{ old('excerpt') }}</textarea>
 
-<label class="block mb-2">Konten</label>
-<textarea name="content" id="editor"
- class="w-full border p-2 mb-4"></textarea>
+	<label class="block mb-2">Konten</label>
+	<textarea name="content" id="editor" class="w-full border rounded px-3 py-2 mb-3"></textarea>
 
-<label class="block mb-2">Gambar</label>
-<input type="file" name="image" class="mb-4">
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+		<div>
+			<label class="block mb-2">Gambar</label>
+			<input type="file" name="image">
+		</div>
 
-<label class="block mb-2">Tanggal Publish</label>
-<input type="datetime-local" name="published_at"
- class="border p-2 mb-4">
+		<div>
+			<label class="block mb-2">Tanggal Publish</label>
+			<input type="datetime-local" name="published_at" class="w-full border rounded px-3 py-2">
+		</div>
+	</div>
 
-<label class="block mb-2">Meta Title</label>
-<input name="meta_title" class="w-full border p-2 mb-4">
+	<label class="block mb-2">Meta Title</label>
+	<input name="meta_title" value="{{ old('meta_title') }}" class="w-full border rounded px-3 py-2 mb-3">
 
-<label class="block mb-2">Meta Description</label>
-<textarea name="meta_description"
- class="w-full border p-2 mb-4"></textarea>
+	<label class="block mb-2">Meta Description</label>
+	<textarea name="meta_description" class="w-full border rounded px-3 py-2 mb-3">{{ old('meta_description') }}</textarea>
 
-<button class="bg-green-600 text-white px-4 py-2 rounded">
-Simpan
-</button>
+	<div class="flex gap-2">
+		<button class="bg-emerald-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+			<span class="material-symbols-outlined">save</span>
+			Simpan
+		</button>
+
+		<a href="{{ route('admin.news.index') }}" class="px-4 py-2 rounded border border-emerald-100 text-emerald-700 hover:bg-emerald-50 inline-flex items-center gap-2">
+			<span class="material-symbols-outlined">arrow_back</span>
+			Batal
+		</a>
+	</div>
+
 </form>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>

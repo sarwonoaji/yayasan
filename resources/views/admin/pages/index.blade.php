@@ -3,36 +3,60 @@
 @section('title','Pages')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-4">Halaman Statis</h1>
+<div class="mb-2">
+    <h1 class="text-2xl font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined text-emerald-600">description</span>
+        Halaman Statis
+    </h1>
 
-<a href="{{ route('admin.pages.create') }}"
-   class="bg-blue-600 text-white px-4 py-2 rounded">
-   + Tambah Halaman
-</a>
+    <div class="mt-3">
+        <a href="{{ route('admin.pages.create') }}" class="bg-emerald-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+            <span class="material-symbols-outlined">add</span>
+            Tambah Halaman
+        </a>
+    </div>
 
-<table class="w-full mt-4 bg-white rounded shadow">
-    <tr class="border-b">
-        <th class="p-2">Judul</th>
-        <th>Slug</th>
-        <th>Status</th>
-        <th>Aksi</th>
-    </tr>
+</div>
 
-    @foreach($pages as $page)
-    <tr class="border-b">
-        <td class="p-2">{{ $page->title }}</td>
-        <td>{{ $page->slug }}</td>
-        <td>{{ $page->is_active ? 'Aktif' : 'Nonaktif' }}</td>
-        <td class="space-x-2">
-            <a href="{{ route('admin.pages.edit',$page) }}" class="text-blue-600">Edit</a>
-            <form method="POST" action="{{ route('admin.pages.destroy',$page) }}" class="inline">
-                @csrf @method('DELETE')
-                <button onclick="return confirm('Hapus halaman?')" class="text-red-600">
-                    Hapus
-                </button>
-            </form>
-        </td>
-    </tr>
-    @endforeach
-</table>
+<div class="mt-4 bg-white rounded shadow overflow-x-auto">
+    <table class="w-full min-w-[720px]">
+        <thead>
+            <tr class="text-left bg-slate-700">
+                <th class="p-3 text-slate-100">Judul</th>
+                <th class="p-3 text-slate-100">Slug</th>
+                <th class="p-3 text-slate-100">Status</th>
+                <th class="p-3 text-slate-100">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($pages as $page)
+        <tr class="border-b hover:bg-emerald-50">
+            <td class="p-3">{{ $page->title }}</td>
+            <td class="p-3">{{ $page->slug }}</td>
+            <td class="p-3">
+                @if($page->is_active)
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-600 text-white">Aktif</span>
+                @else
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">Nonaktif</span>
+                @endif
+            </td>
+            <td class="p-3">
+                <div class="flex items-center gap-2">
+                    <a href="{{ route('admin.pages.edit',$page) }}" class="inline-flex items-center justify-center w-8 h-8 rounded hover:bg-emerald-50 text-emerald-600 border border-transparent hover:border-emerald-100" title="Edit">
+                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                    </a>
+
+                    <form method="POST" action="{{ route('admin.pages.destroy',$page) }}" onsubmit="return confirm('Hapus halaman?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded hover:bg-red-50 text-red-600 border border-transparent hover:border-red-100" title="Hapus">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection

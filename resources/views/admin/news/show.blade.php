@@ -3,92 +3,86 @@
 @section('title', $news->title)
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">{{ $news->title }}</h1>
-    <div class="flex gap-2">
-        <a href="{{ route('admin.news.edit', $news) }}" 
-           class="bg-yellow-500 text-white px-4 py-2 rounded">
+<div class="flex items-start justify-between gap-4 mb-4">
+    <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-emerald-600 text-3xl">article</span>
+        <div>
+            <h1 class="text-xl font-bold">{{ $news->title }}</h1>
+            <div class="text-sm text-slate-500">{{ $news->slug }}</div>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <a href="{{ route('admin.news.edit', $news) }}" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded text-sm">
+            <span class="material-symbols-outlined">edit</span>
             Edit
         </a>
-        <a href="{{ route('admin.news.index') }}" 
-           class="bg-gray-500 text-white px-4 py-2 rounded">
+
+        <a href="{{ route('admin.news.index') }}" class="inline-flex items-center gap-2 border border-slate-200 px-3 py-2 rounded text-sm text-slate-700 hover:bg-slate-50">
+            <span class="material-symbols-outlined">arrow_back</span>
             Kembali
         </a>
     </div>
 </div>
 
-<div class="bg-white rounded shadow p-6">
+<div class="bg-white rounded shadow overflow-hidden">
     @if($news->image)
-        <img src="{{ asset('storage/'.$news->image) }}" 
-             class="w-full max-h-96 object-cover rounded mb-4">
+    <div class="w-full max-h-96 overflow-hidden">
+        <img src="{{ asset('storage/'.$news->image) }}" alt="{{ $news->title }}" class="w-full h-56 object-cover">
+    </div>
     @endif
 
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Slug:</span>
-        <p class="text-gray-700">{{ $news->slug }}</p>
-    </div>
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+                <div class="text-sm text-slate-500">Penulis</div>
+                <div class="font-medium text-slate-800">{{ $news->user?->name ?? 'N/A' }}</div>
+            </div>
 
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Penulis:</span>
-        <p class="text-gray-700">{{ $news->user?->name ?? 'N/A' }}</p>
-    </div>
+            <div>
+                <div class="text-sm text-slate-500">Status</div>
+                @if($news->published_at && $news->published_at <= now())
+                    <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-600 text-white">Published</div>
+                @else
+                    <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">Draft</div>
+                @endif
+            </div>
 
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Status:</span>
-        @if($news->published_at && $news->published_at <= now())
-            <p class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded">
-                Dipublikasikan
-            </p>
-        @else
-            <p class="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                Draft
-            </p>
+            <div>
+                <div class="text-sm text-slate-500">Tanggal Publish</div>
+                <div class="text-slate-700 text-sm">{{ $news->published_at ? $news->published_at->format('d M Y H:i') : 'Belum ditentukan' }}</div>
+            </div>
+        </div>
+
+        @if($news->excerpt)
+            <div class="mb-6 text-slate-700">{{ $news->excerpt }}</div>
         @endif
-    </div>
 
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Tanggal Publish:</span>
-        <p class="text-gray-700">
-            {{ $news->published_at ? $news->published_at->format('d M Y H:i') : 'Belum ditentukan' }}
-        </p>
-    </div>
-
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Excerpt:</span>
-        <p class="text-gray-700">{{ $news->excerpt ?? '-' }}</p>
-    </div>
-
-    <hr class="my-6">
-
-    <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-4">Konten</h3>
-        <div class="prose prose-sm max-w-none">
+        <div class="prose max-w-none mb-6">
             {!! $news->content !!}
         </div>
-    </div>
 
-    <hr class="my-6">
+        <div class="border-t pt-4 flex items-center justify-between">
+            <div class="text-sm text-slate-600">
+                <div><strong>Meta Title:</strong> {{ $news->meta_title ?? '-' }}</div>
+                <div class="mt-1"><strong>Meta Description:</strong> {{ $news->meta_description ?? '-' }}</div>
+            </div>
 
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Meta Title:</span>
-        <p class="text-gray-700">{{ $news->meta_title ?? '-' }}</p>
-    </div>
+            <div class="flex items-center gap-2">
+                <a href="{{ route('news.show', $news->slug) }}" target="_blank" class="inline-flex items-center gap-2 text-slate-700 border border-slate-200 px-3 py-2 rounded hover:bg-slate-50">
+                    <span class="material-symbols-outlined">visibility</span>
+                    Lihat Publik
+                </a>
 
-    <div class="mb-4">
-        <span class="text-sm text-gray-500">Meta Description:</span>
-        <p class="text-gray-700">{{ $news->meta_description ?? '-' }}</p>
-    </div>
-
-    <div class="mt-6">
-        <form method="POST" action="{{ route('admin.news.destroy', $news) }}" class="inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" 
-                    onclick="return confirm('Yakin ingin menghapus berita ini?')"
-                    class="bg-red-600 text-white px-4 py-2 rounded">
-                Hapus
-            </button>
-        </form>
+                <form method="POST" action="{{ route('admin.news.destroy', $news) }}" onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
+                        <span class="material-symbols-outlined">delete</span>
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

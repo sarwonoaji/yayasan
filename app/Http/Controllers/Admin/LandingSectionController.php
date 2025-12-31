@@ -32,6 +32,9 @@ class LandingSectionController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        // Ensure checkbox absence becomes false
+        $data['is_active'] = $request->boolean('is_active');
+
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')
                 ->store('landing', 'public');
@@ -60,6 +63,9 @@ class LandingSectionController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        // Ensure checkbox absence becomes false when unchecked
+        $data['is_active'] = $request->boolean('is_active');
+
         if ($request->hasFile('image')) {
 
             if ($landingSection->image) {
@@ -72,7 +78,9 @@ class LandingSectionController extends Controller
 
         $landingSection->update($data);
 
-        return back()->with('success', 'Landing section berhasil diperbarui');
+        return redirect()
+            ->route('admin.landing-sections.index')
+            ->with('success', 'Landing section berhasil diperbarui');
     }
 
     public function destroy(LandingSection $landingSection)

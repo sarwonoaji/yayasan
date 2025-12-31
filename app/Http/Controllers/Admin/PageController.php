@@ -32,6 +32,9 @@ class PageController extends Controller
             'is_active'        => 'boolean',
         ]);
 
+        // Ensure checkbox absence becomes false
+        $data['is_active'] = $request->boolean('is_active');
+
         Page::create($data);
 
         return redirect()
@@ -55,9 +58,14 @@ class PageController extends Controller
             'is_active'        => 'boolean',
         ]);
 
+        // Ensure checkbox absence becomes false
+        $data['is_active'] = $request->boolean('is_active');
+
         $page->update($data);
 
-        return back()->with('success', 'Halaman diperbarui');
+        return redirect()
+            ->route('admin.pages.index')
+            ->with('success', 'Halaman diperbarui');
     }
 
     public function destroy(Page $page)

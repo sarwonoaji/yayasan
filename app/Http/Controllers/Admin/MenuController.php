@@ -29,6 +29,9 @@ class MenuController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        // Ensure checkbox absence becomes false
+        $data['is_active'] = $request->boolean('is_active');
+
         Menu::create($data);
 
         return redirect()
@@ -49,6 +52,9 @@ class MenuController extends Controller
             'order'     => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
+
+        // Ensure checkbox absence becomes false
+        $data['is_active'] = $request->boolean('is_active');
 
         $menu->update($data);
 

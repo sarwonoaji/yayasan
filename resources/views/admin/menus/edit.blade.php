@@ -3,7 +3,12 @@
 @section('title','Edit Menu')
 
 @section('content')
-<h1 class="text-xl font-bold mb-4">Edit Menu</h1>
+<div class="flex items-center justify-between mb-4">
+    <h1 class="text-xl font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined text-emerald-600">edit</span>
+        Edit Menu
+    </h1>
+</div>
 
 <form method="POST" action="{{ route('admin.menus.update', $menu) }}" class="max-w-2xl bg-white p-6 rounded shadow">
 @csrf
@@ -12,7 +17,7 @@
 <div class="mb-4">
     <label class="block font-semibold mb-2">Judul Menu *</label>
     <input type="text" name="title" value="{{ old('title', $menu->title) }}" 
-           class="w-full border p-2 rounded @error('title') border-red-500 @enderror" 
+           class="w-full border rounded px-3 py-2 @error('title') border-red-500 @enderror" 
            placeholder="Contoh: Profil, Visi Misi" required>
     @error('title')
         <span class="text-red-600 text-sm">{{ $message }}</span>
@@ -22,7 +27,7 @@
 <div class="mb-4">
     <label class="block font-semibold mb-2">URL / Link *</label>
     <input type="text" name="url" value="{{ old('url', $menu->url) }}" 
-           class="w-full border p-2 rounded @error('url') border-red-500 @enderror" 
+           class="w-full border rounded px-3 py-2 @error('url') border-red-500 @enderror" 
            placeholder="Contoh: /profil, /visi-misi, https://example.com" required>
     <small class="text-gray-600">Gunakan / untuk halaman internal atau URL lengkap untuk eksternal</small>
     @error('url')
@@ -33,7 +38,7 @@
 <div class="mb-4">
     <label class="block font-semibold mb-2">Urutan Menu</label>
     <input type="number" name="order" value="{{ old('order', $menu->order) }}" 
-           class="w-full border p-2 rounded @error('order') border-red-500 @enderror" 
+           class="w-full border rounded px-3 py-2 @error('order') border-red-500 @enderror" 
            placeholder="0, 1, 2, 3 (semakin kecil semakin atas)">
     <small class="text-gray-600">Menu dengan angka lebih kecil akan tampil lebih atas</small>
     @error('order')
@@ -49,10 +54,12 @@
 </div>
 
 <div class="flex gap-2">
-    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+    <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded hover:bg-emerald-700 inline-flex items-center gap-2">
+        <span class="material-symbols-outlined">save</span>
         Update Menu
     </button>
-    <a href="{{ route('admin.menus.index') }}" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
+    <a href="{{ route('admin.menus.index') }}" class="bg-gray-100 text-emerald-700 px-6 py-2 rounded hover:bg-emerald-50 inline-flex items-center gap-2 border border-emerald-100">
+        <span class="material-symbols-outlined">arrow_back</span>
         Batal
     </a>
 </div>
