@@ -1,46 +1,69 @@
 <?php
-
 if (! function_exists('renderContent')) {
     function renderContent($content)
     {
-        $content = trim($content);
+        $content = html_entity_decode(trim($content));
+        $zoom = 15;
 
-        // Jika hanya URL Google Maps
+        /**
+         * =========================
+         * 1. oEmbed Google Maps SAJA
+         * =========================
+         */
+        if (
+            preg_match(
+                '/^<oembed[^>]*url="([^"]+google\.com\/maps[^"]+)"[^>]*><\/oembed>$/i',
+                $content,
+                $m
+            )
+        ) {
+            $url = $m[1];
+
+            if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $url, $c)) {
+                $lat = $c[1];
+                $lng = $c[2];
+
+                return '
+                <div class="not-prose space-y-4">
+                    <iframe
+                        src="https://www.google.com/maps?q='.$lat.','.$lng.'&z='.$zoom.'&output=embed"
+                        width="100%"
+                        height="450"
+                        style="border:0;"
+                        loading="lazy"
+                        allowfullscreen>
+                    </iframe>
+                </div>';
+            }
+        }
+
+        /**
+         * =========================
+         * 2. URL Google Maps polos SAJA
+         * =========================
+         */
         if (
             filter_var($content, FILTER_VALIDATE_URL) &&
             str_contains($content, 'google.com/maps')
         ) {
-            // Ambil koordinat
-            if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $content, $c)) {
-                $lat = $c[1];
-                $lng = $c[2];
-
-                return '<div class="not-prose">
-                    <iframe
-                      src="https://www.google.com/maps?q='.$lat.','.$lng.'&z=17&output=embed"
-                      width="100%"
-                      height="450"
-                      style="border:0;"
-                      loading="lazy"
-                      allowfullscreen>
-                    </iframe>
-                </div>';
-            }
-
-            // fallback jika tidak ada koordinat
-            return '<div class="not-prose">
+            return '
+            <div class="not-prose space-y-4">
                 <iframe
-                  src="https://www.google.com/maps?q='.urlencode($content).'&output=embed"
-                  width="100%"
-                  height="450"
-                  style="border:0;"
-                  loading="lazy"
-                  allowfullscreen>
+                    src="https://www.google.com/maps?q='.urlencode($content).'&z='.$zoom.'&output=embed"
+                    width="100%"
+                    height="450"
+                    style="border:0;"
+                    loading="lazy"
+                    allowfullscreen>
                 </iframe>
             </div>';
         }
 
-        // Bukan maps → tampilkan apa adanya
+        /**
+         * =========================
+         * 3. Ada konten lain → biarkan
+         * =========================
+         */
         return $content;
     }
 }
