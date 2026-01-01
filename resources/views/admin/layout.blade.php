@@ -4,6 +4,7 @@
     <title>Admin - @yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet" />
+ @stack('styles')
 </head>
 <body class="bg-gray-100 text-sm">
 
@@ -46,6 +47,23 @@
         </div>
 
         <nav class="space-y-1">
+            <a href="{{ route('admin.pekerjaan.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
+                <span class="nav-text text-sm">Data Pekerjaan</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
+            </a>
+             <a href="{{ route('admin.anggotas.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
+                <span class="nav-text text-sm">Data Anggota</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
+            </a>
+
+            <a href="{{ route('admin.anggotas.maps') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
+                <span class="nav-text text-sm">Maps</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
+            </a>
+
             <a href="{{ route('admin.dashboard') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
                 <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
                 <span class="nav-text text-sm">Dashboard</span>
@@ -115,6 +133,6 @@
 <script>
     // Collapse/hide feature removed; no toggle script required
 </script>
-
+@stack('scripts')
 </body>
 </html>

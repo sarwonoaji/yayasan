@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\AnggotaController;
+use App\Http\Controllers\Admin\PekerjaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,7 +67,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/edit', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    // Anggota routes
+    Route::get('/anggotas/maps', [AnggotaController::class, 'maps'])
+    ->name('anggotas.maps');
+    Route::resource('anggotas', AnggotaController::class);
+    Route::post('anggotas/{id}/restore', [AnggotaController::class, 'restore'])->name('anggotas.restore');
+    Route::resource('pekerjaan', PekerjaanController::class);
+    
+
 });
+
 
 /*
 |--------------------------------------------------------------------------
