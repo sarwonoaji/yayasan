@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AnggotaController;
 use App\Http\Controllers\Admin\PekerjaanController;
+use App\Http\Controllers\Admin\KeluargaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('anggotas', AnggotaController::class);
     Route::post('anggotas/{id}/restore', [AnggotaController::class, 'restore'])->name('anggotas.restore');
     Route::resource('pekerjaan', PekerjaanController::class);
+    Route::resource('keluargas', KeluargaController::class)->only(['index', 'show']);
+    Route::get('keluargas/{id}/pdf', [KeluargaController::class, 'pdf'])->name('keluargas.pdf');
     
 
 });

@@ -47,30 +47,26 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">No. KK <span class="text-red-500">*</span></label>
-                    <input type="text" name="no_kk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('no_kk') border-red-500 @enderror" 
-                        value="{{ old('no_kk', $anggota->no_kk) }}" required>
-                    @error('no_kk') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
-                </div>
-
-                <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Status dalam Keluarga <span class="text-red-500">*</span></label>
-                    <select name="status_kk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('status_kk') border-red-500 @enderror" required>
+                    <select name="status_kk" id="status_kk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('status_kk') border-red-500 @enderror" required>
                         <option value="">-- Pilih --</option>
                         <option value="Kepala Keluarga" {{ old('status_kk', $anggota->status_kk) == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                         <option value="Anggota Keluarga" {{ old('status_kk', $anggota->status_kk) == 'Anggota Keluarga' ? 'selected' : '' }}>Anggota Keluarga</option>
-                    </select>
+                   </select>
                     @error('status_kk') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin <span class="text-red-500">*</span></label>
-                    <select name="jenis_kelamin" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('jenis_kelamin') border-red-500 @enderror" required>
-                        <option value="">-- Pilih --</option>
-                        <option value="L" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="P" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
+                <div id="no_kk_container" class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">No. KK <span class="text-red-500">*</span></label>
+                    <input type="text" id="no_kk_input" name="no_kk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('no_kk') border-red-500 @enderror"
+                        value="{{ old('no_kk', $anggota->no_kk) }}">
+                    <select id="no_kk_select" name="" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('no_kk') border-red-500 @enderror" style="display: none;">
+                        <option value="">-- Pilih No. KK Keluarga --</option>
+                        @foreach($existing_no_kk as $kk)
+                            <option value="{{ $kk->no_kk }}" {{ old('no_kk', $anggota->no_kk) == $kk->no_kk ? 'selected' : '' }}>{{ $kk->no_kk }} - {{ $kk->nama_lengkap }}</option>
+                        @endforeach
                     </select>
-                    @error('jenis_kelamin') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                    @error('no_kk') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
@@ -87,6 +83,16 @@
                     <input type="text" name="nama_lengkap" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('nama_lengkap') border-red-500 @enderror" 
                         value="{{ old('nama_lengkap', $anggota->nama_lengkap) }}" required>
                     @error('nama_lengkap') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin <span class="text-red-500">*</span></label>
+                    <select name="jenis_kelamin" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('jenis_kelamin') border-red-500 @enderror" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="L" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="P" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                    @error('jenis_kelamin') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
@@ -339,6 +345,45 @@
             alert('Silakan pilih lokasi rumah di peta terlebih dahulu!');
         }
     });
+
+    // =========================
+    // DYNAMIC NO KK FIELD
+    // =========================
+    const statusKKSelect = document.getElementById('status_kk');
+    const noKKContainer = document.getElementById('no_kk_container');
+    const noKKInput = document.getElementById('no_kk_input');
+    const noKKSelect = document.getElementById('no_kk_select');
+
+    function toggleNoKKField() {
+        const selectedValue = statusKKSelect.value;
+        if (selectedValue === 'Kepala Keluarga') {
+            noKKContainer.style.display = 'block';
+            noKKInput.style.display = 'block';
+            noKKSelect.style.display = 'none';
+            noKKInput.required = true;
+            noKKSelect.required = false;
+            noKKInput.name = 'no_kk';
+            noKKSelect.name = '';
+        } else if (selectedValue && selectedValue !== '') {
+            // All other family member types (Istri, Anak, Menantu, etc.) select from existing No KK
+            noKKContainer.style.display = 'block';
+            noKKInput.style.display = 'none';
+            noKKSelect.style.display = 'block';
+            noKKInput.required = false;
+            noKKSelect.required = true;
+            noKKInput.name = '';
+            noKKSelect.name = 'no_kk';
+        } else {
+            noKKContainer.style.display = 'none';
+            noKKInput.required = false;
+            noKKSelect.required = false;
+            noKKInput.name = '';
+            noKKSelect.name = '';
+        }
+    }
+
+    statusKKSelect.addEventListener('change', toggleNoKKField);
+    toggleNoKKField(); // Initial check
 </script>
 @endpush
 

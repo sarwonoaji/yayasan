@@ -47,27 +47,32 @@
         </div>
 
         <nav class="space-y-1">
-            <a href="{{ route('admin.pekerjaan.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
-                <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
-                <span class="nav-text text-sm">Data Pekerjaan</span>
-                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
-            </a>
-             <a href="{{ route('admin.anggotas.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
-                <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
-                <span class="nav-text text-sm">Data Anggota</span>
-                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
-            </a>
-
-            <a href="{{ route('admin.anggotas.maps') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
-                <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
-                <span class="nav-text text-sm">Maps</span>
-                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
-            </a>
-
             <a href="{{ route('admin.dashboard') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">
                 <span class="material-symbols-outlined text-slate-300 text-[18px]">dashboard</span>
                 <span class="nav-text text-sm">Dashboard</span>
                 <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Dashboard</span>
+            </a>
+            <a href="{{ route('admin.pekerjaan.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.pekerjaan*') ? 'bg-slate-700' : 'hover:bg-slate-700' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">engineering</span>
+                <span class="nav-text text-sm">Data Pekerjaan</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Data Pekerjaan</span>
+            </a>
+             <a href="{{ route('admin.anggotas.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.anggotas*') ? 'bg-slate-700' : 'hover:bg-slate-700' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">people</span>
+                <span class="nav-text text-sm">Data Anggota</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Data Anggota</span>
+            </a>
+
+            <a href="{{ route('admin.keluargas.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.keluargas*') ? 'bg-slate-700' : 'hover:bg-slate-700' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">family_restroom</span>
+                <span class="nav-text text-sm">Data Keluarga</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Data Keluarga</span>
+            </a>
+
+            <a href="{{ route('admin.anggotas.maps') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.anggotas.maps') ? 'bg-slate-700' : 'hover:bg-slate-700' }}">
+                <span class="material-symbols-outlined text-slate-300 text-[18px]">map</span>
+                <span class="nav-text text-sm">Maps</span>
+                <span class="nav-tooltip absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-slate-800 text-white text-xs px-2 py-1 opacity-0 pointer-events-none">Maps</span>
             </a>
 
             <a href="{{ route('admin.landing-sections.index') }}" class="relative flex items-center gap-2 px-2 py-2 rounded-md {{ request()->routeIs('admin.landing-sections*') ? 'bg-slate-800' : 'hover:bg-slate-900' }}">

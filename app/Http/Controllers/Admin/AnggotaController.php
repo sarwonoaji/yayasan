@@ -12,10 +12,32 @@ class AnggotaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $anggotas = Anggota::where('is_deleted', false)
-            ->paginate(15);
+        $query = Anggota::where('is_deleted', false)
+            ->with('pekerjaan');
+
+        // Handle search
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nik', 'like', '%' . $search . '%')
+                  ->orWhere('nama_lengkap', 'like', '%' . $search . '%')
+                  ->orWhere('tempat_lahir', 'like', '%' . $search . '%')
+                  ->orWhere('status_kk', 'like', '%' . $search . '%')
+                  ->orWhere('no_telp', 'like', '%' . $search . '%')
+                  ->orWhereHas('pekerjaan', function($pq) use ($search) {
+                      $pq->where('nama_pekerjaan', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        $anggotas = $query->paginate(10);
+
+        // If AJAX request, return only the table content
+        if ($request->ajax()) {
+            return view('admin.anggotas.partials.table', compact('anggotas'))->render();
+        }
 
         return view('admin.anggotas.index', compact('anggotas'));
     }
@@ -27,9 +49,13 @@ class AnggotaController extends Controller
     {
 
         $pekerjaans = Pekerjaan::all();
-        $anggotas = Anggota::all();
+        $existing_no_kk = Anggota::where('status_kk', 'Kepala Keluarga')
+            ->whereNotNull('no_kk')
+            ->where('no_kk', '!=', '')
+            ->select('no_kk', 'nama_lengkap')
+            ->get();
 
-        return view('admin.anggotas.create', compact('pekerjaans', 'anggotas'));
+        return view('admin.anggotas.create', compact('pekerjaans', 'existing_no_kk'));
      
     }
 
@@ -40,7 +66,7 @@ class AnggotaController extends Controller
     {
         $validated = $request->validate([
             'nik' => 'required|string|max:16|unique:anggotas,nik',
-            'no_kk' => 'required|string|max:16',
+            'no_kk' => 'required_if:status_kk,Kepala Keluarga,Anggota Keluarga|string|max:16',
             'status_kk' => 'required|string',
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P,Laki-laki,Perempuan',
@@ -88,8 +114,13 @@ class AnggotaController extends Controller
     public function edit(Anggota $anggota)
     {
         $pekerjaans = Pekerjaan::all();
+        $existing_no_kk = Anggota::where('status_kk', 'Kepala Keluarga')
+            ->whereNotNull('no_kk')
+            ->where('no_kk', '!=', '')
+            ->select('no_kk', 'nama_lengkap')
+            ->get();
 
-        return view('admin.anggotas.edit', compact('anggota', 'pekerjaans'));
+        return view('admin.anggotas.edit', compact('anggota', 'pekerjaans', 'existing_no_kk'));
     }
 
     /**
@@ -99,7 +130,7 @@ class AnggotaController extends Controller
     {
         $validated = $request->validate([
             'nik' => 'required|string|max:16|unique:anggotas,nik,' . $anggota->id,
-            'no_kk' => 'required|string|max:16',
+            'no_kk' => 'required_if:status_kk,Kepala Keluarga,Anggota Keluarga|string|max:16',
             'status_kk' => 'required|string',
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P,Laki-laki,Perempuan',
