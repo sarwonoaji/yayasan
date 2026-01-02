@@ -7,6 +7,8 @@ use App\Models\News;
 use App\Models\LandingSection;
 use App\Models\Page;
 use App\Models\Setting;
+use App\Models\Anggota;
+use App\Models\Pekerjaan;
 
 class DashboardController extends Controller
 {
@@ -19,6 +21,9 @@ class DashboardController extends Controller
             'landingSections'  => LandingSection::count(),
             'pages'            => Page::count(),
             'setting'          => Setting::first(),
+            'totalAnggotas'    => Anggota::count(),
+            'activeAnggotas'   => Anggota::where('is_deleted', false)->count(),
+            'totalPekerjaan'   => Pekerjaan::count(),
         ]);
     }
 }

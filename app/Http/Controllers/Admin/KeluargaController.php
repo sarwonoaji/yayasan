@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Anggota;
+use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class KeluargaController extends Controller
@@ -11,12 +12,33 @@ class KeluargaController extends Controller
     /**
      * Display a listing of families (Kepala Keluarga).
      */
-    public function index()
+    public function index(Request $request)
     {
-        $keluargas = Anggota::where('status_kk', 'Kepala Keluarga')
+        $query = Anggota::where('status_kk', 'Kepala Keluarga')
             ->where('is_deleted', false)
-            ->with(['pekerjaan'])
-            ->paginate(10);
+            ->with(['pekerjaan']);
+
+        // Handle search
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nik', 'like', '%' . $search . '%')
+                  ->orWhere('nama_lengkap', 'like', '%' . $search . '%')
+                  ->orWhere('tempat_lahir', 'like', '%' . $search . '%')
+                  ->orWhere('no_kk', 'like', '%' . $search . '%')
+                  ->orWhere('no_telp', 'like', '%' . $search . '%')
+                  ->orWhereHas('pekerjaan', function($pq) use ($search) {
+                      $pq->where('nama_pekerjaan', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        $keluargas = $query->paginate(10);
+
+        // If AJAX request, return only the table content
+        if ($request->ajax()) {
+            return view('admin.keluargas.partials.table', compact('keluargas'))->render();
+        }
 
         return view('admin.keluargas.index', compact('keluargas'));
     }

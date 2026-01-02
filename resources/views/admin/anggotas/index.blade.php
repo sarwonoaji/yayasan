@@ -8,10 +8,17 @@
     </h1>
 
     <div class="mt-3 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <a href="{{ route('admin.anggotas.create') }}" class="bg-emerald-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
-            <span class="material-symbols-outlined">add</span>
-            Tambah Anggota
-        </a>
+        <div class="flex gap-2">
+            <a href="{{ route('admin.anggotas.create') }}" class="bg-emerald-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+                <span class="material-symbols-outlined">add</span>
+                Tambah Anggota
+            </a>
+
+            <a href="{{ route('admin.anggotas.export.excel') }}" class="bg-blue-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+                <span class="material-symbols-outlined">download</span>
+                Cetak Excel
+            </a>
+        </div>
 
         <div class="flex-1 max-w-md">
             <div class="relative">

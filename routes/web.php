@@ -71,6 +71,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Anggota routes
     Route::get('/anggotas/maps', [AnggotaController::class, 'maps'])
     ->name('anggotas.maps');
+    Route::get('/anggotas/export/excel', [AnggotaController::class, 'exportExcel'])->name('anggotas.export.excel');
     Route::resource('anggotas', AnggotaController::class);
     Route::post('anggotas/{id}/restore', [AnggotaController::class, 'restore'])->name('anggotas.restore');
     Route::resource('pekerjaan', PekerjaanController::class);

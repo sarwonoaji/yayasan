@@ -8,11 +8,24 @@ use Illuminate\Http\Request;
 
 class PekerjaanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.pekerjaan.index', [
-            'pekerjaans' => Pekerjaan::latest()->get()
-        ]);
+        $query = Pekerjaan::query();
+
+        // Handle search
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where('nama_pekerjaan', 'like', '%' . $search . '%');
+        }
+
+        $pekerjaans = $query->latest()->paginate(10);
+
+        // If AJAX request, return only the table content
+        if ($request->ajax()) {
+            return view('admin.pekerjaan.partials.table', compact('pekerjaans'))->render();
+        }
+
+        return view('admin.pekerjaan.index', compact('pekerjaans'));
     }
 
     public function create()

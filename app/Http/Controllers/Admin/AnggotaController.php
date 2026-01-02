@@ -43,6 +43,14 @@ class AnggotaController extends Controller
     }
 
     /**
+     * Export data to Excel
+     */
+    public function exportExcel()
+    {
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AnggotaExport, 'data_anggota_' . date('Y-m-d_H-i-s') . '.xlsx');
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
