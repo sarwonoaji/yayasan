@@ -8,12 +8,19 @@
     #map { height: 400px; }
 </style>
 @endpush
+
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Edit Anggota</h1>
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Edit Anggota</h1>
+        <a href="{{ route('admin.anggotas.index') }}" class="inline-flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Kembali
+        </a>
+    </div>
 
     @if ($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            <ul>
+        <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6">
+            <ul class="list-disc list-inside">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -21,225 +28,242 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('admin.anggotas.update', $anggota->id) }}" enctype="multipart/form-data" class="bg-white rounded-lg shadow p-6">
+    <form method="POST" action="{{ route('admin.anggotas.update', $anggota->id) }}" enctype="multipart/form-data" class="space-y-8">
         @csrf
         @method('PUT')
 
-        <div class="grid grid-cols-2 gap-4">
-            <!-- Identitas -->
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">NIK <span class="text-red-500">*</span></label>
-                <input type="text" name="nik" class="w-full px-4 py-2 border rounded @error('nik') border-red-500 @enderror" 
-                    value="{{ old('nik', $anggota->nik) }}" required>
-                @error('nik') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">No. KK <span class="text-red-500">*</span></label>
-                <input type="text" name="no_kk" class="w-full px-4 py-2 border rounded @error('no_kk') border-red-500 @enderror" 
-                    value="{{ old('no_kk', $anggota->no_kk) }}" required>
-                @error('no_kk') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Status dalam Keluarga <span class="text-red-500">*</span></label>
-                <select name="status_kk" class="w-full px-4 py-2 border rounded @error('status_kk') border-red-500 @enderror" required>
-                    <option value="">-- Pilih --</option>
-                    <option value="Kepala Keluarga" {{ old('status_kk', $anggota->status_kk) == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
-                    <option value="Istri" {{ old('status_kk', $anggota->status_kk) == 'Istri' ? 'selected' : '' }}>Istri</option>
-                    <option value="Anak" {{ old('status_kk', $anggota->status_kk) == 'Anak' ? 'selected' : '' }}>Anak</option>
-                    <option value="Menantu" {{ old('status_kk', $anggota->status_kk) == 'Menantu' ? 'selected' : '' }}>Menantu</option>
-                    <option value="Cucu" {{ old('status_kk', $anggota->status_kk) == 'Cucu' ? 'selected' : '' }}>Cucu</option>
-                    <option value="Orang Tua" {{ old('status_kk', $anggota->status_kk) == 'Orang Tua' ? 'selected' : '' }}>Orang Tua</option>
-                    <option value="Lainnya" {{ old('status_kk', $anggota->status_kk) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                </select>
-                @error('status_kk') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <!-- Data Pribadi -->
-            <div class="col-span-2">
-                <label class="block text-gray-700 font-bold mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-                <input type="text" name="nama_lengkap" class="w-full px-4 py-2 border rounded @error('nama_lengkap') border-red-500 @enderror" 
-                    value="{{ old('nama_lengkap', $anggota->nama_lengkap) }}" required>
-                @error('nama_lengkap') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Jenis Kelamin <span class="text-red-500">*</span></label>
-                <select name="jenis_kelamin" class="w-full px-4 py-2 border rounded @error('jenis_kelamin') border-red-500 @enderror" required>
-                    <option value="">-- Pilih --</option>
-                    <option value="Laki-laki" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                    <option value="Perempuan" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                </select>
-                @error('jenis_kelamin') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Tempat Lahir <span class="text-red-500">*</span></label>
-                <input type="text" name="tempat_lahir" class="w-full px-4 py-2 border rounded @error('tempat_lahir') border-red-500 @enderror" 
-                    value="{{ old('tempat_lahir', $anggota->tempat_lahir) }}" required>
-                @error('tempat_lahir') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Tanggal Lahir</label>
-                <input type="date" name="tanggal_lahir" class="w-full px-4 py-2 border rounded @error('tanggal_lahir') border-red-500 @enderror" 
-                    value="{{ old('tanggal_lahir', $anggota->tanggal_lahir?->format('Y-m-d')) }}">
-                @error('tanggal_lahir') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Golongan Darah</label>
-                <select name="golongan_darah" class="w-full px-4 py-2 border rounded @error('golongan_darah') border-red-500 @enderror">
-                    <option value="">-- Pilih --</option>
-                    <option value="A" {{ old('golongan_darah', $anggota->golongan_darah) == 'A' ? 'selected' : '' }}>A</option>
-                    <option value="B" {{ old('golongan_darah', $anggota->golongan_darah) == 'B' ? 'selected' : '' }}>B</option>
-                    <option value="AB" {{ old('golongan_darah', $anggota->golongan_darah) == 'AB' ? 'selected' : '' }}>AB</option>
-                    <option value="O" {{ old('golongan_darah', $anggota->golongan_darah) == 'O' ? 'selected' : '' }}>O</option>
-                </select>
-                @error('golongan_darah') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <!-- Status & Pekerjaan -->
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Status Perkawinan</label>
-                <select name="status_perkawinan" class="w-full px-4 py-2 border rounded @error('status_perkawinan') border-red-500 @enderror">
-                    <option value="">-- Pilih --</option>
-                    <option value="Belum Kawin" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
-                    <option value="Kawin" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Kawin' ? 'selected' : '' }}>Kawin</option>
-                    <option value="Cerai Hidup" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
-                    <option value="Cerai Mati" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
-                </select>
-                @error('status_perkawinan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Pekerjaan</label>
-                <input type="text" name="pekerjaan" class="w-full px-4 py-2 border rounded @error('pekerjaan') border-red-500 @enderror" 
-                    value="{{ old('pekerjaan', $anggota->pekerjaan) }}">
-                @error('pekerjaan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <!-- Alamat -->
-            <div class="col-span-2">
-                <h3 class="font-bold text-lg mb-2">Alamat</h3>
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Desa</label>
-                <input type="text" name="desa" class="w-full px-4 py-2 border rounded @error('desa') border-red-500 @enderror" 
-                    value="{{ old('desa', $anggota->desa) }}">
-                @error('desa') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">RT</label>
-                <input type="text" name="rt" class="w-full px-4 py-2 border rounded @error('rt') border-red-500 @enderror" 
-                    value="{{ old('rt', $anggota->rt) }}" maxlength="5">
-                @error('rt') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">RW</label>
-                <input type="text" name="rw" class="w-full px-4 py-2 border rounded @error('rw') border-red-500 @enderror" 
-                    value="{{ old('rw', $anggota->rw) }}" maxlength="5">
-                @error('rw') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Kelurahan</label>
-                <input type="text" name="kelurahan" class="w-full px-4 py-2 border rounded @error('kelurahan') border-red-500 @enderror" 
-                    value="{{ old('kelurahan', $anggota->kelurahan) }}">
-                @error('kelurahan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Kecamatan</label>
-                <input type="text" name="kecamatan" class="w-full px-4 py-2 border rounded @error('kecamatan') border-red-500 @enderror" 
-                    value="{{ old('kecamatan', $anggota->kecamatan) }}">
-                @error('kecamatan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Kabupaten</label>
-                <input type="text" name="kabupaten" class="w-full px-4 py-2 border rounded @error('kabupaten') border-red-500 @enderror" 
-                    value="{{ old('kabupaten', $anggota->kabupaten) }}">
-                @error('kabupaten') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Provinsi</label>
-                <input type="text" name="provinsi" class="w-full px-4 py-2 border rounded @error('provinsi') border-red-500 @enderror" 
-                    value="{{ old('provinsi', $anggota->provinsi) }}">
-                @error('provinsi') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <!-- Kontak & Dokumen -->
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Tanggal Masuk</label>
-                <input type="date" name="tanggal_masuk" class="w-full px-4 py-2 border rounded @error('tanggal_masuk') border-red-500 @enderror" 
-                    value="{{ old('tanggal_masuk', $anggota->tanggal_masuk?->format('Y-m-d')) }}">
-                @error('tanggal_masuk') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">No. Telp</label>
-                <input type="text" name="no_telp" class="w-full px-4 py-2 border rounded @error('no_telp') border-red-500 @enderror" 
-                    value="{{ old('no_telp', $anggota->no_telp) }}" maxlength="20">
-                @error('no_telp') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-            <div class="col-span-2">
-                <label class="block text-gray-700 font-bold mb-2">Foto</label>
-                @if ($anggota->foto)
-                    <div class="mb-2">
-                        <img src="{{ asset('storage/' . $anggota->foto) }}" alt="{{ $anggota->nama_lengkap }}" class="w-24 h-24 object-cover rounded">
-                    </div>
-                @endif
-                <input type="file" name="foto" class="w-full px-4 py-2 border rounded @error('foto') border-red-500 @enderror" 
-                    accept="image/*">
-                <small class="text-gray-500">Biarkan kosong jika tidak ingin mengubah foto</small>
-                @error('foto') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div>
-
-         <div class="col-span-2 mt-6">
-                <h3 class="font-bold text-lg mb-2">
-                    Lokasi Rumah <span class="text-red-500">*</span>
-                </h3>
-
-                <p class="text-sm text-gray-600 mb-2">
-                    Klik pada peta untuk menentukan lokasi rumah anggota
-                </p>
-
-                <div id="map" class="rounded border"></div>
-
-                <div class="grid grid-cols-2 gap-4 mt-3">
-                    <div>
-                        <label class="text-sm text-gray-600">Latitude</label>
-                        <input type="text" id="lat_preview" value="{{ old('latitude', $anggota->latitude) }}" class="w-full px-3 py-2 border rounded bg-gray-100" readonly>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-600">Longitude</label>
-                        <input type="text" id="lng_preview" value="{{ old('longitude', $anggota->longitude) }}" class="w-full px-3 py-2 border rounded bg-gray-100" readonly>
-                    </div>
+        <!-- Data Keluarga -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600">family_restroom</span>
+                Data Keluarga
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">NIK <span class="text-red-500">*</span></label>
+                    <input type="text" name="nik" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('nik') border-red-500 @enderror" 
+                        value="{{ old('nik', $anggota->nik) }}" required>
+                    @error('nik') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
-                @error('latitude')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">No. KK <span class="text-red-500">*</span></label>
+                    <input type="text" name="no_kk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('no_kk') border-red-500 @enderror" 
+                        value="{{ old('no_kk', $anggota->no_kk) }}" required>
+                    @error('no_kk') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Status dalam Keluarga <span class="text-red-500">*</span></label>
+                    <select name="status_kk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('status_kk') border-red-500 @enderror" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Kepala Keluarga" {{ old('status_kk', $anggota->status_kk) == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
+                        <option value="Anggota Keluarga" {{ old('status_kk', $anggota->status_kk) == 'Anggota Keluarga' ? 'selected' : '' }}>Anggota Keluarga</option>
+                    </select>
+                    @error('status_kk') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin <span class="text-red-500">*</span></label>
+                    <select name="jenis_kelamin" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('jenis_kelamin') border-red-500 @enderror" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="L" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="P" {{ old('jenis_kelamin', $anggota->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                    @error('jenis_kelamin') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
             </div>
-            
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
         </div>
 
-        <div class="mt-6 flex justify-between">
-            <a href="{{ route('admin.anggotas.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Kembali
-            </a>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Perbarui
-            </button>
+        <!-- Data Pribadi -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600">person</span>
+                Data Pribadi
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+                    <input type="text" name="nama_lengkap" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('nama_lengkap') border-red-500 @enderror" 
+                        value="{{ old('nama_lengkap', $anggota->nama_lengkap) }}" required>
+                    @error('nama_lengkap') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('tempat_lahir') border-red-500 @enderror" 
+                        value="{{ old('tempat_lahir', $anggota->tempat_lahir) }}">
+                    @error('tempat_lahir') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
+                    <input type="date" name="tanggal_lahir" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('tanggal_lahir') border-red-500 @enderror" 
+                        value="{{ old('tanggal_lahir', $anggota->tanggal_lahir?->format('Y-m-d')) }}">
+                    @error('tanggal_lahir') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Golongan Darah</label>
+                    <select name="golongan_darah" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('golongan_darah') border-red-500 @enderror">
+                        <option value="">-- Pilih --</option>
+                        <option value="A" {{ old('golongan_darah', $anggota->golongan_darah) == 'A' ? 'selected' : '' }}>A</option>
+                        <option value="B" {{ old('golongan_darah', $anggota->golongan_darah) == 'B' ? 'selected' : '' }}>B</option>
+                        <option value="AB" {{ old('golongan_darah', $anggota->golongan_darah) == 'AB' ? 'selected' : '' }}>AB</option>
+                        <option value="O" {{ old('golongan_darah', $anggota->golongan_darah) == 'O' ? 'selected' : '' }}>O</option>
+                    </select>
+                    @error('golongan_darah') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Status Perkawinan</label>
+                    <select name="status_perkawinan" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('status_perkawinan') border-red-500 @enderror">
+                        <option value="">-- Pilih --</option>
+                        <option value="Belum Kawin" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
+                        <option value="Kawin" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Kawin' ? 'selected' : '' }}>Kawin</option>
+                        <option value="Cerai Hidup" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
+                        <option value="Cerai Mati" {{ old('status_perkawinan', $anggota->status_perkawinan) == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
+                    </select>
+                    @error('status_perkawinan') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Pekerjaan <span class="text-red-500">*</span></label>
+                    <select name="pekerjaan_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('pekerjaan_id') border-red-500 @enderror" required>
+                        <option value="">-- Pilih Pekerjaan --</option>
+                        @foreach($pekerjaans as $pekerjaan)
+                            <option value="{{ $pekerjaan->id }}" {{ old('pekerjaan_id', $anggota->pekerjaan_id) == $pekerjaan->id ? 'selected' : '' }}>{{ $pekerjaan->nama_pekerjaan }}</option>
+                        @endforeach
+                    </select>
+                    @error('pekerjaan_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">No. Telp</label>
+                    <input type="text" name="no_telp" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('no_telp') border-red-500 @enderror" 
+                        value="{{ old('no_telp', $anggota->no_telp) }}">
+                    @error('no_telp') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Masuk</label>
+                    <input type="date" name="tanggal_masuk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('tanggal_masuk') border-red-500 @enderror" 
+                        value="{{ old('tanggal_masuk', $anggota->tanggal_masuk?->format('Y-m-d')) }}">
+                    @error('tanggal_masuk') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Foto</label>
+                    <input type="file" name="foto" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('foto') border-red-500 @enderror">
+                    @if($anggota->foto)
+                        <p class="text-sm text-gray-600 mt-1">Foto saat ini akan diganti jika Anda memilih file baru</p>
+                    @endif
+                    @error('foto') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+            </div>
+        </div>
+
+        <!-- Alamat -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600">location_on</span>
+                Alamat
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Desa</label>
+                    <input type="text" name="desa" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('desa') border-red-500 @enderror" 
+                        value="{{ old('desa', $anggota->desa) }}">
+                    @error('desa') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">RT</label>
+                    <input type="text" name="rt" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('rt') border-red-500 @enderror" 
+                        value="{{ old('rt', $anggota->rt) }}" maxlength="5">
+                    @error('rt') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">RW</label>
+                    <input type="text" name="rw" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('rw') border-red-500 @enderror" 
+                        value="{{ old('rw', $anggota->rw) }}" maxlength="5">
+                    @error('rw') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Kelurahan</label>
+                    <input type="text" name="kelurahan" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('kelurahan') border-red-500 @enderror" 
+                        value="{{ old('kelurahan', $anggota->kelurahan) }}">
+                    @error('kelurahan') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Kecamatan</label>
+                    <input type="text" name="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('kecamatan') border-red-500 @enderror" 
+                        value="{{ old('kecamatan', $anggota->kecamatan) }}">
+                    @error('kecamatan') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Kabupaten</label>
+                    <input type="text" name="kabupaten" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('kabupaten') border-red-500 @enderror" 
+                        value="{{ old('kabupaten', $anggota->kabupaten) }}">
+                    @error('kabupaten') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Provinsi</label>
+                    <input type="text" name="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('provinsi') border-red-500 @enderror" 
+                        value="{{ old('provinsi', $anggota->provinsi) }}">
+                    @error('provinsi') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div>
+            </div>
+        </div>
+
+        <!-- Lokasi -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600">map</span>
+                Lokasi Rumah <span class="text-red-500">*</span>
+            </h3>
+            <p class="text-sm text-gray-600 mb-4">Klik pada peta untuk menentukan lokasi rumah anggota</p>
+
+            <div id="map" class="rounded-lg border border-gray-300 mb-4"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+                    <input type="text" id="lat_preview" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" 
+                        value="{{ old('latitude', $anggota->latitude) }}" readonly>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+                    <input type="text" id="lng_preview" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" 
+                        value="{{ old('longitude', $anggota->longitude) }}" readonly>
+                </div>
+            </div>
+
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
+            @error('latitude')
+                <span class="text-red-500 text-sm mt-2 block">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex justify-end gap-4">
+                <a href="{{ route('admin.anggotas.index') }}" class="inline-flex items-center gap-2 px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    <span class="material-symbols-outlined text-sm">cancel</span>
+                    Batal
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    Perbarui Anggota
+                </button>
+            </div>
         </div>
     </form>
 </div>
@@ -269,7 +293,7 @@
     // =========================
     const map = L.map('map').setView(
         [initialLat, initialLng],
-        hasLocation ? 16 : 5
+        hasLocation ? 18 : 10
     );
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -1,78 +1,96 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">Daftar Anggota</h1>
-        <a href="{{ route('admin.anggotas.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            + Tambah Anggota
+<div class="mb-2">
+    <h1 class="text-2xl font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined text-emerald-600">people</span>
+        Daftar Anggota
+    </h1>
+
+    <div class="mt-3">
+        <a href="{{ route('admin.anggotas.create') }}" class="bg-emerald-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+            <span class="material-symbols-outlined">add</span>
+            Tambah Anggota
         </a>
     </div>
+</div>
 
-    @if (session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
+@if (session('success'))
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg mb-6">
+        {{ session('success') }}
+    </div>
+@endif
 
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <table class="w-full">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="px-4 py-2 text-left">NIK</th>
-                    <th class="px-4 py-2 text-left">Nama Lengkap</th>
-                    <th class="px-4 py-2 text-left">Jenis Kelamin</th>
-                    <th class="px-4 py-2 text-left">Tempat/Tanggal Lahir</th>
-                    <th class="px-4 py-2 text-left">Pekerjaan</th>
-                    <th class="px-4 py-2 text-left">No. Telp</th>
-                    <th class="px-4 py-2 text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($anggotas as $anggota)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $anggota->nik }}</td>
-                        <td class="px-4 py-2">{{ $anggota->nama_lengkap }}</td>
-                        <td class="px-4 py-2">
-                            <span class="px-2 py-1 bg-gray-200 rounded">
-                                {{ $anggota->jenis_kelamin == 'L' || $anggota->jenis_kelamin == 'Laki-laki' ? 'Laki-laki' : 'Perempuan' }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2">
-                            {{ $anggota->tempat_lahir }}
-                            @if ($anggota->tanggal_lahir)
-                                <br><small class="text-gray-600">{{ $anggota->tanggal_lahir->format('d M Y') }}</small>
-                            @endif
-                        </td>
-                        <td class="px-4 py-2">{{ $anggota->pekerjaan->nama_pekerjaan?? '-'}}</td>
-                        <td class="px-4 py-2">{{ $anggota->no_telp ?? '-' }}</td>
-                        <td class="px-4 py-2 text-center">
-                            <a href="{{ route('admin.anggotas.show', $anggota->id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
-                                Lihat
+<div class="mt-4 bg-white rounded shadow overflow-x-auto">
+    <table class="w-full min-w-[1000px]">
+        <thead>
+            <tr class="text-left bg-slate-700">
+                <th class="p-3 text-slate-100">NIK</th>
+                <th class="p-3 text-slate-100">Nama Lengkap</th>
+                <th class="p-3 text-slate-100">Jenis Kelamin</th>
+                <th class="p-3 text-slate-100">Tempat/Tanggal Lahir</th>
+                <th class="p-3 text-slate-100">Pekerjaan</th>
+                <th class="p-3 text-slate-100">No. Telp</th>
+                <th class="p-3 text-slate-100 text-center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($anggotas as $anggota)
+                <tr class="border-b hover:bg-emerald-50">
+                    <td class="p-3">{{ $anggota->nik }}</td>
+                    <td class="p-3">{{ $anggota->nama_lengkap }}</td>
+                    <td class="p-3">
+                        @if($anggota->jenis_kelamin == 'L' || $anggota->jenis_kelamin == 'Laki-laki')
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white">Laki-laki</span>
+                        @else
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-pink-600 text-white">Perempuan</span>
+                        @endif
+                    </td>
+                    <td class="p-3">
+                        {{ $anggota->tempat_lahir }}
+                        @if ($anggota->tanggal_lahir)
+                            <br><span class="text-gray-500 text-sm">{{ $anggota->tanggal_lahir->format('d M Y') }}</span>
+                        @endif
+                    </td>
+                    <td class="p-3">{{ $anggota->pekerjaan->nama_pekerjaan ?? '-' }}</td>
+                    <td class="p-3">{{ $anggota->no_telp ?? '-' }}</td>
+                    <td class="p-3">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('admin.anggotas.show', $anggota->id) }}" class="inline-flex items-center justify-center w-8 h-8 rounded hover:bg-emerald-50 text-emerald-600 border border-transparent hover:border-emerald-100" title="Lihat Detail">
+                                <span class="material-symbols-outlined text-[18px]">visibility</span>
                             </a>
-                            <a href="{{ route('admin.anggotas.edit', $anggota->id) }}" class="text-yellow-500 hover:text-yellow-700 mr-2">
-                                Edit
+                            <a href="{{ route('admin.anggotas.edit', $anggota->id) }}" class="inline-flex items-center justify-center w-8 h-8 rounded hover:bg-blue-50 text-blue-600 border border-transparent hover:border-blue-100" title="Edit">
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
                             </a>
-                            <form method="POST" action="{{ route('admin.anggotas.destroy', $anggota->id) }}" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Yakin ingin menghapus?')">
-                                    Hapus
+                            <form method="POST" action="{{ route('admin.anggotas.destroy', $anggota->id) }}" class="inline" onsubmit="return confirm('Yakin ingin menghapus anggota ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded hover:bg-red-50 text-red-600 border border-transparent hover:border-red-100" title="Hapus">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
                                 </button>
                             </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="px-4 py-2 text-center text-gray-500">Tidak ada data anggota</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="p-8 text-center">
+                        <div class="flex flex-col items-center gap-3">
+                            <span class="material-symbols-outlined text-gray-400 text-5xl">person_off</span>
+                            <div>
+                                <p class="text-gray-500 font-medium">Tidak ada data anggota</p>
+                                <p class="text-gray-400 text-sm mt-1">Belum ada anggota yang terdaftar dalam sistem</p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
-    <div class="mt-4">
+@if($anggotas->hasPages())
+    <div class="mt-6 flex justify-center">
         {{ $anggotas->links() }}
     </div>
-</div>
+@endif
 @endsection

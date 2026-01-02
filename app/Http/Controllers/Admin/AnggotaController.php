@@ -87,7 +87,9 @@ class AnggotaController extends Controller
      */
     public function edit(Anggota $anggota)
     {
-        return view('admin.anggotas.edit', compact('anggota'));
+        $pekerjaans = Pekerjaan::all();
+
+        return view('admin.anggotas.edit', compact('anggota', 'pekerjaans'));
     }
 
     /**
@@ -105,7 +107,7 @@ class AnggotaController extends Controller
             'tanggal_lahir' => 'nullable|date',
             'golongan_darah' => 'nullable|string|max:5',
             'status_perkawinan' => 'nullable|string|max:255',
-            'pekerjaan' => 'nullable|string|max:255',
+            'pekerjaan_id' => 'nullable|exists:pekerjaans,id',
             'desa' => 'nullable|string|max:255',
             'rt' => 'nullable|string|max:5',
             'rw' => 'nullable|string|max:5',
