@@ -292,24 +292,6 @@
                     @endif
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-white text-lg">Menu Navigasi</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        @forelse($menus as $menu)
-                            <li><a href="{{ $menu->url }}" class="text-gray-400 hover:text-emerald-400 hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-1"><span>→</span>{{ $menu->title }}</a></li>
-                        @empty
-                            <li class="text-gray-500">Belum ada menu</li>
-                        @endforelse
-                    </ul>
-                </div>
-
                 <div data-aos="fade-up" data-aos-delay="200" class="border-l-2 border-emerald-600 pl-6 md:border-l-2 md:pl-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
@@ -347,9 +329,7 @@
                     <p class="text-sm text-gray-400">
                         © {{ date('Y') }} <span class="text-emerald-400 font-semibold">{{ $settings->site_name ?? 'Yayasan' }}</span>. All rights reserved.
                     </p>
-                    <p class="text-sm text-gray-400">
-                        Designed with <span class="text-red-500 animate-pulse">❤️</span> by Team
-                    </p>
+                    
                 </div>
             </div>
         </div>

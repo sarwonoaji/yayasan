@@ -85,7 +85,9 @@ class NewsController extends Controller
 
         $news->update($data);
 
-        return back()->with('success', 'Berita berhasil diperbarui');
+        return redirect()
+            ->route('admin.news.index')
+            ->with('success', 'Berita berhasil diperbarui');
     }
 
     public function destroy(News $news)

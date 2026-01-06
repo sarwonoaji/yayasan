@@ -112,6 +112,42 @@
                 </div>
             </div>
         </div>
+
+        <div class="bg-blue-50 p-4 rounded flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-100 rounded flex items-center justify-center text-blue-600">
+                    <span class="material-symbols-outlined">family_restroom</span>
+                </div>
+                <div>
+                    <h3 class="text-sm text-gray-600">Total Keluarga</h3>
+                    <p class="text-2xl font-bold text-blue-700">{{ $totalKeluargas }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 p-4 rounded flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-100 rounded flex items-center justify-center text-blue-600">
+                    <span class="material-symbols-outlined">male</span>
+                </div>
+                <div>
+                    <h3 class="text-sm text-gray-600">Laki-laki</h3>
+                    <p class="text-2xl font-bold text-blue-700">{{ $maleAnggotas }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 p-4 rounded flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-100 rounded flex items-center justify-center text-blue-600">
+                    <span class="material-symbols-outlined">female</span>
+                </div>
+                <div>
+                    <h3 class="text-sm text-gray-600">Perempuan</h3>
+                    <p class="text-2xl font-bold text-blue-700">{{ $femaleAnggotas }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

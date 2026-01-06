@@ -24,6 +24,9 @@ class DashboardController extends Controller
             'totalAnggotas'    => Anggota::count(),
             'activeAnggotas'   => Anggota::where('is_deleted', false)->count(),
             'totalPekerjaan'   => Pekerjaan::count(),
+            'totalKeluargas'   => Anggota::where('status_kk', 'Kepala Keluarga')->count(),
+            'maleAnggotas'     => Anggota::where('jenis_kelamin', 'L')->count(),
+            'femaleAnggotas'   => Anggota::where('jenis_kelamin', 'P')->count(),
         ]);
     }
 }
