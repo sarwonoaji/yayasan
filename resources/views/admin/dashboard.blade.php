@@ -2,14 +2,14 @@
 
 @section('title', 'Dashboard')
 
-@section('content')
-
-<div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold flex items-center gap-3">
+@section('page-title')
+    <h1 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
         <span class="material-symbols-outlined text-emerald-600">dashboard</span>
         Dashboard Admin
     </h1>
-</div>
+@endsection
+
+@section('content')
 
 {{-- Content Management Statistics --}}
 <div class="bg-white rounded shadow p-6 mb-6">

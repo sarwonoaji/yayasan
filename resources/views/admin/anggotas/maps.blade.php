@@ -13,9 +13,12 @@
     $hasFilter = request('provinsi') || request('kabupaten') || request('kecamatan');
 @endphp
 
-<div class="container mx-auto px-4 py-8">
+<div class="mb-2">
     <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Peta Lokasi Anggota</h1>
+        <h1 class="text-2xl font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined text-emerald-600">map</span>
+        Peta Anggota
+    </h1>
         <a href="{{ route('admin.anggotas.index') }}" class="inline-flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
             <span class="material-symbols-outlined text-sm">arrow_back</span>
             Kembali

@@ -12,17 +12,7 @@
         </div>
     </div>
 
-    <div class="flex items-center gap-2">
-        <a href="{{ route('admin.news.edit', $news) }}" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded text-sm">
-            <span class="material-symbols-outlined">edit</span>
-            Edit
-        </a>
-
-        <a href="{{ route('admin.news.index') }}" class="inline-flex items-center gap-2 border border-slate-200 px-3 py-2 rounded text-sm text-slate-700 hover:bg-slate-50">
-            <span class="material-symbols-outlined">arrow_back</span>
-            Kembali
-        </a>
-    </div>
+   
 </div>
 
 <div class="bg-white rounded shadow overflow-hidden">
@@ -74,13 +64,10 @@
                     Lihat Publik
                 </a>
 
-                <form method="POST" action="{{ route('admin.news.destroy', $news) }}" onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
-                        <span class="material-symbols-outlined">delete</span>
-                        Hapus
-                    </button>
-                </form>
+                <a href="{{ route('admin.news.index') }}" class="inline-flex items-center gap-2 border border-slate-200 px-3 py-2 rounded text-sm text-slate-700 hover:bg-slate-50">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Kembali
+                 </a>
             </div>
         </div>
     </div>

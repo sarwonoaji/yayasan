@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AnggotaController;
 use App\Http\Controllers\Admin\PekerjaanController;
 use App\Http\Controllers\Admin\KeluargaController;
+use App\Http\Controllers\Admin\AdminProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +78,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('pekerjaan', PekerjaanController::class);
     Route::resource('keluargas', KeluargaController::class)->only(['index', 'show']);
     Route::get('keluargas/{id}/pdf', [KeluargaController::class, 'pdf'])->name('keluargas.pdf');
+    
+    // Profile routes for admin
+    Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [AdminProfileController::class, 'destroy'])->name('profile.destroy');
     
 
 });
