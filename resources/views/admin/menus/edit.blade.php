@@ -18,7 +18,7 @@
     <label class="block font-semibold mb-2">Judul Menu *</label>
     <input type="text" name="title" value="{{ old('title', $menu->title) }}" 
            class="w-full border rounded px-3 py-2 @error('title') border-red-500 @enderror" 
-           placeholder="Contoh: Profil, Visi Misi" required>
+          required>
     @error('title')
         <span class="text-red-600 text-sm">{{ $message }}</span>
     @enderror
@@ -28,8 +28,7 @@
     <label class="block font-semibold mb-2">URL / Link *</label>
     <input type="text" name="url" value="{{ old('url', $menu->url) }}" 
            class="w-full border rounded px-3 py-2 @error('url') border-red-500 @enderror" 
-           placeholder="Contoh: /profil, /visi-misi, https://example.com" required>
-    <small class="text-gray-600">Gunakan / untuk halaman internal atau URL lengkap untuk eksternal</small>
+        required>
     @error('url')
         <span class="text-red-600 text-sm">{{ $message }}</span>
     @enderror
@@ -39,7 +38,7 @@
     <label class="block font-semibold mb-2">Urutan Menu</label>
     <input type="number" name="order" value="{{ old('order', $menu->order) }}" 
            class="w-full border rounded px-3 py-2 @error('order') border-red-500 @enderror" 
-           placeholder="0, 1, 2, 3 (semakin kecil semakin atas)">
+          >
     <small class="text-gray-600">Menu dengan angka lebih kecil akan tampil lebih atas</small>
     @error('order')
         <span class="text-red-600 text-sm">{{ $message }}</span>
