@@ -92,23 +92,25 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 10px;
+            font-size: 9px;
+            table-layout: fixed;
         }
 
         .table th {
             background-color: #f8fafc;
             color: #374151;
             font-weight: bold;
-            padding: 8px 4px;
+            padding: 6px 4px;
             text-align: left;
             border: 1px solid #e5e7eb;
-            font-size: 10px;
+            font-size: 9px;
         }
 
         .table td {
-            padding: 6px 4px;
+            padding: 4px 4px;
             border: 1px solid #e5e7eb;
             vertical-align: top;
+            word-wrap: break-word;
         }
 
         .table tr:nth-child(even) {
@@ -164,28 +166,28 @@
         }
 
         .photo-cell {
-            width: 60px;
+            width: 50px;
             text-align: center;
         }
 
         .photo-img {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             object-fit: cover;
             border-radius: 4px;
             border: 1px solid #e5e7eb;
         }
 
         .photo-placeholder {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background-color: #f3f4f6;
             border: 1px solid #e5e7eb;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 6px;
             color: #6b7280;
         }
 
@@ -283,15 +285,15 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th style="width: 25px;">No</th>
-                    <th style="width: 60px;">Foto</th>
-                    <th style="width: 100px;">Status</th>
-                    <th style="width: 120px;">NIK</th>
+                    <th style="width: 30px; text-align: center;">No</th>
+                    <th style="width: 50px; text-align: center;">Foto</th>
+                    <th style="width: 80px;">Status</th>
+                    <th style="width: 100px;">NIK</th>
                     <th>Nama Lengkap</th>
-                    <th style="width: 70px;">J.Kelamin</th>
-                    <th style="width: 120px;">TTL</th>
-                    <th style="width: 100px;">Pekerjaan</th>
-                    <th style="width: 90px;">No. Telepon</th>
+                    <th style="width: 50px; text-align: center;">J.Kelamin</th>
+                    <th style="width: 100px;">TTL</th>
+                    <th style="width: 80px;">Pekerjaan</th>
+                    <th style="width: 80px;">No. Telepon</th>
                 </tr>
             </thead>
             <tbody>
@@ -323,9 +325,9 @@
                                 {{ $anggota->status_kk }}
                             </span>
                         </td>
-                        <td class="no-wrap" style="font-family: monospace; font-size: 9px;">{{ $anggota->nik }}</td>
+                        <td class="no-wrap" style="font-family: monospace; font-size: 8px;">{{ $anggota->nik }}</td>
                         <td style="font-weight: bold;">{{ $anggota->nama_lengkap }}</td>
-                        <td>
+                        <td style="text-align: center;">
                             @if($anggota->jenis_kelamin == 'L' || $anggota->jenis_kelamin == 'Laki-laki')
                                 <span class="gender-laki">L</span>
                             @else
@@ -335,7 +337,7 @@
                         <td>
                             <div>{{ $anggota->tempat_lahir }}</div>
                             @if ($anggota->tanggal_lahir)
-                                <div style="color: #6b7280; font-size: 8px;">{{ $anggota->tanggal_lahir->format('d/m/Y') }}</div>
+                                <div style="color: #6b7280; font-size: 7px;">{{ $anggota->tanggal_lahir->format('d/m/Y') }}</div>
                             @endif
                         </td>
                         <td>{{ $anggota->pekerjaan->nama_pekerjaan ?? '-' }}</td>
