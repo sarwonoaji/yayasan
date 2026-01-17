@@ -58,8 +58,9 @@
 
 </form>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
-<script>
-ClassicEditor.create(document.querySelector('#editor'));
-</script>
+@push('scripts')
+    <script>
+        // Initialization is handled by resources/js/ckeditor.js via app.js
+    </script>
+@endpush
 @endsection
