@@ -8,9 +8,7 @@
 
     {{-- SEO BASIC --}}
     <meta name="description" content="@yield('meta_description','Website resmi yayasan')">
-
-    {{-- Tailwind --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="mobile-web-app-capable" content="yes">
     
     {{-- AOS (Animate On Scroll) --}}
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
@@ -181,6 +179,7 @@
         }
     </style>
     @stack('styles')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white text-gray-900 leading-relaxed">
 

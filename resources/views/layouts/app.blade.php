@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#10b981">
         <meta name="description" content="Yayasan Sosial Indonesia - Membantu masyarakat dengan program sosial yang berkelanjutan">
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-title" content="Yayasan">
         <link rel="manifest" href="/manifest.json">
