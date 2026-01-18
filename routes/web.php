@@ -70,6 +70,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/settings/edit', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
     // Anggota routes
+    Route::get('/anggotas/reverse-geocode', [AnggotaController::class, 'getReverseGeocode'])
+    ->name('anggotas.reverse-geocode');
     Route::get('/anggotas/maps', [AnggotaController::class, 'maps'])
     ->name('anggotas.maps');
     Route::get('/anggotas/export/excel', [AnggotaController::class, 'exportExcel'])->name('anggotas.export.excel');

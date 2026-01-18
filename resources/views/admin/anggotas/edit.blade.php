@@ -169,6 +169,38 @@
             </div>
         </div>
 
+        
+        <!-- Lokasi -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600">map</span>
+                Lokasi Rumah <span class="text-red-500">*</span>
+            </h3>
+            <p class="text-sm text-gray-600 mb-4">Klik pada peta untuk menentukan lokasi rumah anggota</p>
+
+            <div id="map" class="rounded-lg border border-gray-300 mb-4"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+                    <input type="text" id="lat_preview" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" 
+                        value="{{ old('latitude', $anggota->latitude) }}" readonly>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+                    <input type="text" id="lng_preview" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" 
+                        value="{{ old('longitude', $anggota->longitude) }}" readonly>
+                </div>
+            </div>
+
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
+            @error('latitude')
+                <span class="text-red-500 text-sm mt-2 block">{{ $message }}</span>
+            @enderror
+        </div>
+
         <!-- Alamat -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
@@ -176,6 +208,13 @@
                 Alamat
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {{-- <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Lengkap</label>
+                    <textarea name="alamat_lengkap" id="alamat_lengkap" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('alamat_lengkap') border-red-500 @enderror" 
+                        placeholder="Alamat akan otomatis terisi setelah memilih lokasi di peta">{{ old('alamat_lengkap', $anggota->alamat_lengkap ?? '') }}</textarea>
+                    @error('alamat_lengkap') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                </div> --}}
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Desa</label>
                     <input type="text" name="desa" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('desa') border-red-500 @enderror" 
@@ -227,36 +266,6 @@
             </div>
         </div>
 
-        <!-- Lokasi -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-emerald-600">map</span>
-                Lokasi Rumah <span class="text-red-500">*</span>
-            </h3>
-            <p class="text-sm text-gray-600 mb-4">Klik pada peta untuk menentukan lokasi rumah anggota</p>
-
-            <div id="map" class="rounded-lg border border-gray-300 mb-4"></div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
-                    <input type="text" id="lat_preview" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" 
-                        value="{{ old('latitude', $anggota->latitude) }}" readonly>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
-                    <input type="text" id="lng_preview" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" 
-                        value="{{ old('longitude', $anggota->longitude) }}" readonly>
-                </div>
-            </div>
-
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
-
-            @error('latitude')
-                <span class="text-red-500 text-sm mt-2 block">{{ $message }}</span>
-            @enderror
-        </div>
 
         <!-- Submit Buttons -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -309,9 +318,31 @@
     let marker = null;
 
     // =========================
+    // GET ADDRESS FROM COORDINATES (REVERSE GEOCODING)
+    // =========================
+    async function getAddressFromCoordinates(lat, lng) {
+        try {
+            // Call backend endpoint yang tidak memiliki masalah CORS
+            const response = await fetch(
+                `{{ route('admin.anggotas.reverse-geocode') }}?lat=${lat}&lng=${lng}`
+            );
+            
+            if (!response.ok) {
+                throw new Error('Gagal mengambil data alamat');
+            }
+            
+            const data = await response.json();
+            return data.address || null;
+        } catch (error) {
+            console.error('Error getting address:', error);
+            return null;
+        }
+    }
+
+    // =========================
     // SET MARKER
     // =========================
-    function setMarker(lat, lng) {
+    async function setMarker(lat, lng) {
         if (marker) map.removeLayer(marker);
 
         marker = L.marker([lat, lng]).addTo(map);
@@ -320,6 +351,95 @@
         document.getElementById('longitude').value = lng;
         document.getElementById('lat_preview').value = lat;
         document.getElementById('lng_preview').value = lng;
+
+        // RESET SEMUA FIELD ALAMAT TERLEBIH DAHULU
+        //document.getElementById('alamat_lengkap').value = '';
+        document.querySelector('input[name="desa"]').value = '';
+        document.querySelector('input[name="kelurahan"]').value = '';
+        document.querySelector('input[name="kecamatan"]').value = '';
+        document.querySelector('input[name="kabupaten"]').value = '';
+        document.querySelector('input[name="provinsi"]').value = '';
+
+        // Ambil alamat dari koordinat
+        const addressData = await getAddressFromCoordinates(lat, lng);
+        
+        if (addressData) {
+            console.log('Nominatim Response:', addressData);
+            
+            // Format alamat lengkap dengan lebih detail
+            const addressParts = [];
+            
+            // Tambahkan komponen alamat yang tersedia (lebih detail)
+            if (addressData.house_number) addressParts.push(addressData.house_number);
+            if (addressData.road) addressParts.push(addressData.road);
+            if (addressData.house_name) addressParts.push(addressData.house_name);
+            if (addressData.neighbourhood) addressParts.push(addressData.neighbourhood);
+            if (addressData.hamlet) addressParts.push(addressData.hamlet);
+            
+            const formattedAddress = addressParts.join(', ');
+            
+            // Set alamat ke textarea
+            // if (formattedAddress) {
+            //     document.getElementById('alamat_lengkap').value = formattedAddress;
+            // } else if (addressData.display_name) {
+            //     // Jika tidak ada detail, gunakan display_name
+            //     document.getElementById('alamat_lengkap').value = addressData.display_name;
+            // }
+            
+            // MAPPING UNTUK INDONESIA (Nominatim memiliki struktur berbeda per lokasi)
+            
+            // DESA - prioritas: hamlet > suburb
+            if (addressData.hamlet) {
+                document.querySelector('input[name="desa"]').value = addressData.hamlet;
+            } else if (addressData.suburb) {
+                document.querySelector('input[name="desa"]').value = addressData.suburb;
+            }
+            
+            // KELURAHAN - prioritas: village > neighbourhood
+            if (addressData.village) {
+                document.querySelector('input[name="kelurahan"]').value = addressData.village;
+            } else if (addressData.neighbourhood) {
+                document.querySelector('input[name="kelurahan"]').value = addressData.neighbourhood;
+            }
+            
+            // KECAMATAN - logic khusus untuk Indonesia
+            let kecamatan = '';
+            
+            // Jika ada municipality dengan format "Kecamatan XXX"
+            if (addressData.municipality && addressData.municipality.includes('Kecamatan')) {
+                kecamatan = addressData.municipality.replace('Kecamatan ', '').trim();
+            } 
+            // Jika ada county (di beberapa tempat ini adalah kecamatan)
+            else if (addressData.county) {
+                kecamatan = addressData.county;
+            }
+            
+            if (kecamatan) {
+                document.querySelector('input[name="kecamatan"]').value = kecamatan;
+            }
+            
+            // KABUPATEN - logic: city > county (ketika tidak ada municipality dengan "Kecamatan")
+            let kabupaten = '';
+            
+            if (addressData.city) {
+                kabupaten = addressData.city;
+            } 
+            // Jika city tidak ada tapi ada county dan tidak ada municipality "Kecamatan"
+            else if (addressData.county && (!addressData.municipality || !addressData.municipality.includes('Kecamatan'))) {
+                kabupaten = addressData.county;
+            }
+            
+            if (kabupaten) {
+                document.querySelector('input[name="kabupaten"]').value = kabupaten;
+            }
+            
+            // PROVINSI - selalu state atau region
+            if (addressData.state) {
+                document.querySelector('input[name="provinsi"]').value = addressData.state;
+            } else if (addressData.region) {
+                document.querySelector('input[name="provinsi"]').value = addressData.region;
+            }
+        }
     }
 
     // =========================

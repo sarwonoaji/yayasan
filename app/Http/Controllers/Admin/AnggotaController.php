@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Anggota;
 use App\Models\Pekerjaan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AnggotaController extends Controller
 {
@@ -198,6 +200,39 @@ class AnggotaController extends Controller
 
         return redirect()->route('admin.anggotas.index')
             ->with('error', 'Anggota tidak ditemukan.');
+    }
+
+    /**
+     * Get address from coordinates (Reverse Geocoding)
+     */
+    public function getReverseGeocode(Request $request)
+    {
+        $lat = $request->query('lat');
+        $lng = $request->query('lng');
+
+        if (!$lat || !$lng) {
+            return response()->json(['error' => 'Latitude and longitude are required'], 400);
+        }
+
+        try {
+            $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$lat}&lon={$lng}";
+            
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'User-Agent' => 'Laravel-App'
+            ])->timeout(10)->get($url);
+
+            $data = json_decode((string)$response, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json(['error' => 'Invalid JSON response from Nominatim'], 500);
+            }
+
+            return response()->json($data);
+        } catch (\Throwable $e) {
+            Log::error('Reverse Geocode Error: ' . $e->getMessage());
+            return response()->json(['error' => 'Error: ' . $e->getMessage()], 500);
+        }
     }
 
 //   
