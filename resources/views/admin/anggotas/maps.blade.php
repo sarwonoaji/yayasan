@@ -1,5 +1,6 @@
 @extends('admin.layout')
 
+@section('title','Maps Anggota')
 @section('content')
 
 @push('styles')

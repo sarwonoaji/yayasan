@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title','Menu')
+@section('title','Pekerjaan')
 
 @section('content')
 <div class="mb-2">

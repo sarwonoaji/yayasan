@@ -1,5 +1,6 @@
 @extends('admin.layout')
 
+@section('title','Keluarga')
 @section('content')
 <div class="mb-2">
     <h1 class="text-2xl font-bold flex items-center gap-2">

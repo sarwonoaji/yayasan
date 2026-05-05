@@ -1,5 +1,6 @@
 @extends('admin.layout')
 
+@section('title','Pengaturan Situs')
 @section('content')
 <div class="py-8">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">

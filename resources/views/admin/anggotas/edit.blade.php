@@ -1,5 +1,6 @@
 @extends('admin.layout')
 
+@section('title','Edit Anggota')
 @section('content')
 
 @push('styles')
